@@ -220,4 +220,7 @@ fabric.properties
 
 
 
+# Project specific
 
+Script/Binds.Cache
+Script/Binds.Cache.Headers
