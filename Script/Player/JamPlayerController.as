@@ -9,7 +9,7 @@ class AJamPlayerController : APlayerController
 	UPROPERTY(DefaultComponent)
 	UInputComponent InputComponent;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TogglePauseMenu(FKey key)
 	{
 		if (PauseMenuInstance != nullptr && PauseMenuInstance.IsInViewport())
@@ -19,6 +19,9 @@ class AJamPlayerController : APlayerController
 			bShowMouseCursor = false;
 			Widget::SetInputMode_GameOnly(this);
 			Gameplay::SetGamePaused(false);
+
+			AJamGameMode GameMode = Cast<AJamGameMode>(Gameplay::GetGameMode());
+			GameMode.WriteSaveGame();
 			return;
 		}
 
@@ -37,5 +40,11 @@ class AJamPlayerController : APlayerController
 	{
 		PushInputComponent(InputComponent);
 		InputComponent.BindAction(n"PauseMenu", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"TogglePauseMenu"));
+
+		// TArray<AAmbientSound> AmbientSounds;
+		// GetAllActorsOfClass(AmbientSounds);
+		// AAmbientSound AS = AmbientSounds[0];
+
+		// USoundClass Effects = Cast<USoundClass>(FindObject("/Game/Audio/SC_Effects"));
 	}
 }

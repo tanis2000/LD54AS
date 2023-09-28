@@ -21,12 +21,22 @@ class ATestActor : APawn
     UPROPERTY(DefaultComponent)
     UInputComponent InputComponent;
 
+	UPROPERTY(DefaultComponent)
+	UAudioComponent Audio;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave JumpSound;
+
+	AJamGameMode GameMode;
+
 	UFUNCTION(BlueprintOverride)
 	void BeginPlay()
 	{
 		Collider.OnComponentHit.AddUFunction(this, n"OnHit");
 		BaseMesh.OnComponentBeginOverlap.AddUFunction(this, n"OnBeginOverlap");
 		BaseMesh.OnComponentEndOverlap.AddUFunction(this, n"OnEndOverlap");
+
+		GameMode = Cast<AJamGameMode>(Gameplay::GetGameMode());
 	}
 
 	void Jump()
@@ -34,6 +44,10 @@ class ATestActor : APawn
         Print("Trying to jump");
         Collider.AddImpulse(FVector::UpVector * 500, NAME_None, true);
         Stretch.Stretch();
+		Sound::PlaySFX(Audio, JumpSound);
+		// Audio.SetSound(JumpSound);
+		// Audio.SetVolumeMultiplier(GameMode.SoundEffectsVolumeMultiplier);
+		// Audio.Play();
 	}
 
 	UFUNCTION()
