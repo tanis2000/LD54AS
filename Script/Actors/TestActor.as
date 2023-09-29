@@ -18,8 +18,8 @@ class ATestActor : APawn
 	UPROPERTY(DefaultComponent)
 	UStretchComponent Stretch;
 
-    UPROPERTY(DefaultComponent)
-    UInputComponent InputComponent;
+	UPROPERTY(DefaultComponent)
+	UInputComponent InputComponent;
 
 	UPROPERTY(DefaultComponent)
 	UAudioComponent Audio;
@@ -41,9 +41,9 @@ class ATestActor : APawn
 
 	void Jump()
 	{
-        Print("Trying to jump");
-        Collider.AddImpulse(FVector::UpVector * 500, NAME_None, true);
-        Stretch.Stretch();
+		Print("Trying to jump");
+		Collider.AddImpulse(FVector::UpVector * 500, NAME_None, true);
+		Stretch.Stretch();
 		Sound::PlaySFX(Audio, JumpSound);
 		// Audio.SetSound(JumpSound);
 		// Audio.SetVolumeMultiplier(GameMode.SoundEffectsVolumeMultiplier);
@@ -53,8 +53,8 @@ class ATestActor : APawn
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent HitComponent, AActor OtherActor, UPrimitiveComponent OtherComp, FVector NormalImpulse, const FHitResult&in Hit)
 	{
-		//Print(f"Hit {OtherActor.Tags.Num()} {Hit.bBlockingHit}");
-		//Stretch.Squeeze();
+		// Print(f"Hit {OtherActor.Tags.Num()} {Hit.bBlockingHit}");
+		// Stretch.Squeeze();
 	}
 
 	UFUNCTION()
@@ -62,14 +62,14 @@ class ATestActor : APawn
 						UPrimitiveComponent OtherComp, int OtherBodyIndex, bool bFromSweep,
 						const FHitResult&in SweepResult)
 	{
-        Print(f"OnBeginOverlap {OtherActor.Tags.Num()}");
-        Stretch.Squeeze();
+		Print(f"OnBeginOverlap {OtherActor.Tags.Num()}");
+		Stretch.Squeeze();
 	}
 
 	UFUNCTION()
 	private void OnEndOverlap(UPrimitiveComponent OverlappedComponent, AActor OtherActor,
 					  UPrimitiveComponent OtherComp, int OtherBodyIndex)
 	{
-        Print(f"OnEndOverlap {OtherActor.Tags.Num()}");
+		Print(f"OnEndOverlap {OtherActor.Tags.Num()}");
 	}
 }
