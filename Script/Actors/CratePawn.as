@@ -11,6 +11,8 @@ class ACratePawn: APawn
     UPROPERTY(EditAnywhere)
     float MovementSpeed = 500;
 
+    default SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
@@ -71,11 +73,11 @@ class ACratePawn: APawn
 						const FHitResult&in SweepResult)
 	{
         if (OtherActor != this) {
-            Print(f"Crate OnBeginOverlap {OtherActor.Class}");
+            Log(f"Crate OnBeginOverlap {OtherActor.Class}");
 
             AHeroPawn Hero = Cast<AHeroPawn>(OtherActor);
             if (Hero != nullptr) {
-                Print(f">> {SweepResult.ImpactNormal}");
+                Log(f">> {SweepResult.ImpactNormal}");
                 if (CanMove(SweepResult.ImpactNormal)) {
                     TargetLocation = GetActorLocation() + SweepResult.ImpactNormal * 100;
                 }
@@ -87,6 +89,6 @@ class ACratePawn: APawn
 	private void OnEndOverlap(UPrimitiveComponent OverlappedComponent, AActor OtherActor,
 					  UPrimitiveComponent OtherComp, int OtherBodyIndex)
 	{
-        // Print(f"OnEndOverlap {OtherActor.Tags.Num()}");
+        // Log(f"OnEndOverlap {OtherActor.Tags.Num()}");
 	}
 }

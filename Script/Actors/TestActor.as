@@ -41,7 +41,7 @@ class ATestActor : APawn
 
 	void Jump()
 	{
-        Print("Trying to jump");
+        Log("Trying to jump");
         Collider.AddImpulse(FVector::UpVector * 500, NAME_None, true);
         Stretch.Stretch();
 		Sound::PlaySFX(Audio, JumpSound);
@@ -53,7 +53,7 @@ class ATestActor : APawn
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent HitComponent, AActor OtherActor, UPrimitiveComponent OtherComp, FVector NormalImpulse, const FHitResult&in Hit)
 	{
-		//Print(f"Hit {OtherActor.Tags.Num()} {Hit.bBlockingHit}");
+		//Log(f"Hit {OtherActor.Tags.Num()} {Hit.bBlockingHit}");
 		//Stretch.Squeeze();
 	}
 
@@ -62,7 +62,7 @@ class ATestActor : APawn
 						UPrimitiveComponent OtherComp, int OtherBodyIndex, bool bFromSweep,
 						const FHitResult&in SweepResult)
 	{
-        // Print(f"OnBeginOverlap {OtherActor.Tags.Num()}");
+        // Log(f"OnBeginOverlap {OtherActor.Tags.Num()}");
         Stretch.Squeeze();
 	}
 
@@ -70,6 +70,6 @@ class ATestActor : APawn
 	private void OnEndOverlap(UPrimitiveComponent OverlappedComponent, AActor OtherActor,
 					  UPrimitiveComponent OtherComp, int OtherBodyIndex)
 	{
-        // Print(f"OnEndOverlap {OtherActor.Tags.Num()}");
+        // Log(f"OnEndOverlap {OtherActor.Tags.Num()}");
 	}
 }

@@ -147,7 +147,7 @@ void ALeaderboardActor::SubmitScore(FString Name, int32 Score)
 	{
 		if (connectedSuccessfully)
 		{
-			UE_LOG(LogTemp, Error, TEXT("Score submitted."));
+			UE_LOG(LogTemp, Display, TEXT("Score submitted."));
 		} else
 		{
 			switch (pRequest->GetStatus()) {

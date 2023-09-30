@@ -5,4 +5,7 @@ class UJamSaveGame : USaveGame
     
     UPROPERTY()
     float SoundEffectsVolumeMultiplier;
+
+    UPROPERTY()
+    int CurrentLevel;
 }

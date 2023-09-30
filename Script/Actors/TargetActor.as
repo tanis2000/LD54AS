@@ -6,6 +6,8 @@ class ATargetActor: AActor
     UPROPERTY(DefaultComponent, Attach = Collider)
     UStaticMeshComponent BaseMesh;
 
+    default SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
     bool HasCrate() {
         FVector Start = GetActorLocation();
         FVector End = Start + FVector::UpVector;

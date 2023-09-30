@@ -8,5 +8,4 @@ class AJamPlayerPawn: APawn
 
     UPROPERTY(DefaultComponent, Attach = SpringArm)
     UCameraComponent Camera;
-
 }

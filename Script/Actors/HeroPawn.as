@@ -19,9 +19,12 @@ class AHeroPawn: APawn
 
     TArray<AActor> Crates;
 
+    default SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+    
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
+        
         TargetLocation = GetActorLocation();
 
         BaseMesh.OnComponentBeginOverlap.AddUFunction(this, n"OnBeginOverlap");
@@ -122,14 +125,14 @@ class AHeroPawn: APawn
 						UPrimitiveComponent OtherComp, int OtherBodyIndex, bool bFromSweep,
 						const FHitResult&in SweepResult)
 	{
-        Print(f"OnBeginOverlap {OtherActor.Tags.Num()}");
+        Log(f"OnBeginOverlap {OtherActor.Tags.Num()}");
 	}
 
 	UFUNCTION()
 	private void OnEndOverlap(UPrimitiveComponent OverlappedComponent, AActor OtherActor,
 					  UPrimitiveComponent OtherComp, int OtherBodyIndex)
 	{
-        Print(f"OnEndOverlap {OtherActor.Tags.Num()}");
+        Log(f"OnEndOverlap {OtherActor.Tags.Num()}");
 	}
 
 }

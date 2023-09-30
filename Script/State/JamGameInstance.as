@@ -1,9 +1,11 @@
-class AJamPlayerState: APlayerState
+class UJamGameInstance: UGameInstance
 {
-    // TODO Remove all this stuff, it is in JamGameInstance now
-
     UPROPERTY(Transient, Replicated)
     FText PlayerDisplayName;
+    default PlayerDisplayName = FText::FromString("TestPlayer");
+
+    UPROPERTY(BlueprintReadWrite)
+    int CurrentLevel = 1;
 
     UFUNCTION(BlueprintCallable, Category = "Player")
     FText GetPlayerDisplayName()
@@ -12,8 +14,8 @@ class AJamPlayerState: APlayerState
     }
 
     UFUNCTION(BlueprintCallable, Category = "Player")
-    void SetPlayerDisplayName(FText Name)
+    void SetPlayerDisplayName(FText PlayerName)
     {
-        PlayerDisplayName = Name;
+        PlayerDisplayName = PlayerName;
     }
 }
