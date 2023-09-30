@@ -11,13 +11,13 @@ class UStretchComponent : UActorComponent
 	FOnTimelineVector ProgressSqueezeTimeline;
 	FOnTimelineVector ProgressStretchTimeline;
 	FVector InitialScale;
-	UStaticMeshComponent BaseMesh;
+	UMeshComponent BaseMesh;
 	UGroundCheckComponent GroundCheck;
 
 	UFUNCTION(BlueprintOverride)
 	void BeginPlay()
 	{
-		BaseMesh = Cast<UStaticMeshComponent>(Owner.GetComponentByClass(UStaticMeshComponent::StaticClass()));
+		BaseMesh = Cast<UMeshComponent>(Owner.GetComponentByClass(UMeshComponent::StaticClass()));
 		InitialScale = BaseMesh.GetRelativeScale3D();
 
 		GroundCheck = Cast<UGroundCheckComponent>(Owner.GetComponentByClass(UGroundCheckComponent::StaticClass()));

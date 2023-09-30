@@ -6,6 +6,9 @@ class ATargetActor: AActor
     UPROPERTY(DefaultComponent, Attach = Collider)
     UStaticMeshComponent BaseMesh;
 
+    UPROPERTY(DefaultComponent, Attach = Collider)
+    UNiagaraComponent Particles;
+
     default SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
     bool HasCrate() {

@@ -4,7 +4,7 @@ class AHeroPawn: APawn
     UBoxComponent Collider;
 
     UPROPERTY(DefaultComponent, Attach = Collider)
-    UStaticMeshComponent BaseMesh;
+    USkeletalMeshComponent BaseMesh;
 
     UPROPERTY(DefaultComponent, Attach = Collider)
     UArrowComponent Arrow;
@@ -26,6 +26,12 @@ class AHeroPawn: APawn
     TArray<AActor> Crates;
 
     FVector StartingLocation;
+
+    UPROPERTY()
+    bool bMoving;
+
+    UPROPERTY()
+    bool bPushing;
 
     default SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
     
@@ -81,12 +87,17 @@ class AHeroPawn: APawn
     {
         FVector CurrentLocation = GetActorLocation();
         if (CurrentLocation == TargetLocation) {
+            bMoving = false;
+            bPushing = false;
             return;
         }
 
+        bMoving = true;
+        bPushing = true;
+
         if ((CurrentLocation - TargetLocation).GetAbs().Size() < 10) {
             SetActorLocation(TargetLocation);
-            Stretch.Squeeze();
+            // Stretch.Squeeze();
             return;
         }
 
@@ -107,7 +118,8 @@ class AHeroPawn: APawn
     void MoveRight() {
         if (CanMove(FVector::RightVector)) {
             StartingLocation = GetActorLocation();
-            Stretch.Stretch();
+            FaceDirection(FVector::RightVector);
+            // Stretch.Stretch();
             TargetLocation = GetActorLocation() + FVector::RightVector * 100;
         }
     }
@@ -116,7 +128,8 @@ class AHeroPawn: APawn
     void MoveLeft() {
         if (CanMove(FVector::LeftVector)) {
             StartingLocation = GetActorLocation();
-            Stretch.Stretch();
+            FaceDirection(FVector::LeftVector);
+            // Stretch.Stretch();
             TargetLocation = GetActorLocation() + FVector::LeftVector * 100;
         }
     }
@@ -125,7 +138,8 @@ class AHeroPawn: APawn
     void MoveUp() {
         if (CanMove(FVector::ForwardVector)) {
             StartingLocation = GetActorLocation();
-            Stretch.Stretch();
+            FaceDirection(FVector::ForwardVector);
+            // Stretch.Stretch();
             TargetLocation = GetActorLocation() + FVector::ForwardVector * 100;
         }
     }
@@ -134,7 +148,8 @@ class AHeroPawn: APawn
     void MoveDown() {
         if (CanMove(FVector::BackwardVector)) {
             StartingLocation = GetActorLocation();
-            Stretch.Stretch();
+            FaceDirection(FVector::BackwardVector);
+            // Stretch.Stretch();
             TargetLocation = GetActorLocation() + FVector::BackwardVector * 100;
         }
     }
@@ -154,4 +169,11 @@ class AHeroPawn: APawn
         Log(f"OnEndOverlap {OtherActor.Tags.Num()}");
 	}
 
+    void FaceDirection(FVector Direction)
+    {
+        FVector NewForward = Direction;
+        NewForward.Normalize();
+        FRotator Rotator = NewForward.Rotation();
+        SetActorRotation(Rotator);
+    }
 }
