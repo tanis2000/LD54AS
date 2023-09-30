@@ -13,11 +13,20 @@ class AJamGameMode : AGameModeBase
 	default PlayerStateClass = AJamPlayerState::StaticClass();
 	default PlayerControllerClass = AJamPlayerController::StaticClass();
 
+	TArray<ATargetActor> Targets;
+
 	UFUNCTION(BlueprintOverride)
 	void BeginPlay()
 	{
 		ReadSaveGame();
 		UpdateAudioVolumes();
+		CollectTargets();
+	}
+
+	UFUNCTION(BlueprintOverride)
+	void Tick(float DeltaSeconds)
+	{
+		CheckWinCondition();
 	}
 
 	void WriteSaveGame()
@@ -52,5 +61,20 @@ class AJamGameMode : AGameModeBase
             AAmbientSound AS = AmbientSounds[i];
             AS.AudioComponent.SetVolumeMultiplier(MusicVolumeMultiplier);
         }
+	}
+
+	void CollectTargets()
+	{
+		GetAllActorsOfClass(Targets);
+	}
+
+	void CheckWinCondition() {
+		for (int i = 0 ; i < Targets.Num() ; i++) {
+			ATargetActor Target = Targets[i];
+			if (!Target.HasCrate()) {
+				return;
+			}
+		}
+		Print("Win");
 	}
 }

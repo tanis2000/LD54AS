@@ -62,7 +62,7 @@ class ATestActor : APawn
 						UPrimitiveComponent OtherComp, int OtherBodyIndex, bool bFromSweep,
 						const FHitResult&in SweepResult)
 	{
-        Print(f"OnBeginOverlap {OtherActor.Tags.Num()}");
+        // Print(f"OnBeginOverlap {OtherActor.Tags.Num()}");
         Stretch.Squeeze();
 	}
 
@@ -70,6 +70,6 @@ class ATestActor : APawn
 	private void OnEndOverlap(UPrimitiveComponent OverlappedComponent, AActor OtherActor,
 					  UPrimitiveComponent OtherComp, int OtherBodyIndex)
 	{
-        Print(f"OnEndOverlap {OtherActor.Tags.Num()}");
+        // Print(f"OnEndOverlap {OtherActor.Tags.Num()}");
 	}
 }

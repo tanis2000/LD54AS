@@ -9,6 +9,9 @@ class AJamPlayerController : APlayerController
 	UPROPERTY(DefaultComponent)
 	UInputComponent InputComponent;
 
+	UPROPERTY()
+	AHeroPawn Hero;
+
 	UFUNCTION(BlueprintCallable)
 	void TogglePauseMenu(FKey key)
 	{
@@ -40,11 +43,43 @@ class AJamPlayerController : APlayerController
 	{
 		PushInputComponent(InputComponent);
 		InputComponent.BindAction(n"PauseMenu", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"TogglePauseMenu"));
+		InputComponent.BindAction(n"MoveRight", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"MoveRight"));
+		InputComponent.BindAction(n"MoveLeft", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"MoveLeft"));
+		InputComponent.BindAction(n"MoveUp", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"MoveUp"));
+		InputComponent.BindAction(n"MoveDown", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"MoveDown"));
+
+		TArray<AHeroPawn> Heroes;
+		GetAllActorsOfClass(Heroes);
+		Hero = Cast<AHeroPawn>(Heroes[0]);
 
 		// TArray<AAmbientSound> AmbientSounds;
 		// GetAllActorsOfClass(AmbientSounds);
 		// AAmbientSound AS = AmbientSounds[0];
 
 		// USoundClass Effects = Cast<USoundClass>(FindObject("/Game/Audio/SC_Effects"));
+	}
+
+	UFUNCTION(BlueprintCallable)
+	void MoveRight(FKey key)
+	{
+		Hero.MoveRight();
+	}
+
+	UFUNCTION(BlueprintCallable)
+	void MoveLeft(FKey key)
+	{
+		Hero.MoveLeft();
+	}
+
+	UFUNCTION(BlueprintCallable)
+	void MoveUp(FKey key)
+	{
+		Hero.MoveUp();
+	}
+
+	UFUNCTION(BlueprintCallable)
+	void MoveDown(FKey key)
+	{
+		Hero.MoveDown();
 	}
 }
