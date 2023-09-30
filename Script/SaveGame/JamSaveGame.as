@@ -6,6 +6,6 @@ class UJamSaveGame : USaveGame
     UPROPERTY()
     float SoundEffectsVolumeMultiplier;
 
-    UPROPERTY()
+    UPROPERTY(BlueprintReadWrite)
     int CurrentLevel;
 }

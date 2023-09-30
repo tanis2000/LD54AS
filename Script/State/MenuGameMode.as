@@ -7,6 +7,21 @@ class AMenuGameModeBase : AGameModeBase
     void BeginPlay()
     {
         UJamSaveSystem SaveSystem = UJamSaveSystem::Get();
-        
+        SaveSystem.ReadSaveGame();
+    }
+
+    UFUNCTION(BlueprintCallable)
+    int GetCurrentLevel() 
+    {
+        UJamSaveSystem SaveSystem = UJamSaveSystem::Get();
+        return SaveSystem.CurrentSaveGame.CurrentLevel; 
+    }
+
+    UFUNCTION(BlueprintCallable)
+    void ResetCurrentLevelAndSave()
+    {
+        UJamSaveSystem SaveSystem = UJamSaveSystem::Get();
+        SaveSystem.CurrentSaveGame.CurrentLevel = 1;
+        SaveSystem.WriteSaveGame(); 
     }
 }
