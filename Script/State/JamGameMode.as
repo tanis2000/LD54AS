@@ -122,8 +122,8 @@ class AJamGameMode : AGameModeBase
 		
 		CurrentGameState = EGameState::Transitioning;
 		UJamGameInstance GI = Cast<UJamGameInstance>(GameInstance);
-		GI.CurrentLevel++;
 		SubmitScore(GI.CurrentLevel);
+		GI.CurrentLevel++;
 		WriteSaveGame();
 	}
 

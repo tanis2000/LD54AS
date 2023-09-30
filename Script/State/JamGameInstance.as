@@ -2,7 +2,7 @@ class UJamGameInstance: UGameInstance
 {
     UPROPERTY(Transient, Replicated)
     FText PlayerDisplayName;
-    default PlayerDisplayName = FText::FromString("TestPlayer");
+    // default PlayerDisplayName = FText::FromString("TestPlayer");
 
     UPROPERTY(BlueprintReadWrite)
     int CurrentLevel = 1;
