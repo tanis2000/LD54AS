@@ -12,12 +12,20 @@ class AHeroPawn: APawn
     UPROPERTY(DefaultComponent)
     UFloatingPawnMovement MovementComponent;
 
+	UPROPERTY(DefaultComponent)
+	UStretchComponent Stretch;
+
+    UPROPERTY()
+    UCurveVector MovementInterpolationCurve;
+
     FVector TargetLocation;
 
     UPROPERTY(EditAnywhere)
     float MovementSpeed = 500;
 
     TArray<AActor> Crates;
+
+    FVector StartingLocation;
 
     default SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
     
@@ -78,12 +86,17 @@ class AHeroPawn: APawn
 
         if ((CurrentLocation - TargetLocation).GetAbs().Size() < 10) {
             SetActorLocation(TargetLocation);
+            Stretch.Squeeze();
             return;
         }
 
         FVector Direction = (TargetLocation - CurrentLocation);
         Direction.Normalize();
-        FVector NewLocation = CurrentLocation + (Direction * MovementSpeed * DeltaSeconds);
+        FVector TotalDistance = TargetLocation - StartingLocation;
+        FVector ActualDistance = TargetLocation - CurrentLocation;
+        float Diff = ActualDistance.Size() / TotalDistance.Size();
+        FVector InterpOffset = MovementInterpolationCurve.GetVectorValue(Diff);
+        FVector NewLocation = CurrentLocation + (Direction * MovementSpeed * DeltaSeconds) * InterpOffset;
 
         FHitResult Hit;
         SetActorLocation(NewLocation, true, Hit, true); 
@@ -92,9 +105,9 @@ class AHeroPawn: APawn
 
     UFUNCTION()
     void MoveRight() {
-        // AddMovementInput(FVector::RightVector * 100, 1, true);
-        // GetMovementComponent().AddInputVector(FVector::RightVector * 100);
         if (CanMove(FVector::RightVector)) {
+            StartingLocation = GetActorLocation();
+            Stretch.Stretch();
             TargetLocation = GetActorLocation() + FVector::RightVector * 100;
         }
     }
@@ -102,6 +115,8 @@ class AHeroPawn: APawn
     UFUNCTION()
     void MoveLeft() {
         if (CanMove(FVector::LeftVector)) {
+            StartingLocation = GetActorLocation();
+            Stretch.Stretch();
             TargetLocation = GetActorLocation() + FVector::LeftVector * 100;
         }
     }
@@ -109,6 +124,8 @@ class AHeroPawn: APawn
     UFUNCTION()
     void MoveUp() {
         if (CanMove(FVector::ForwardVector)) {
+            StartingLocation = GetActorLocation();
+            Stretch.Stretch();
             TargetLocation = GetActorLocation() + FVector::ForwardVector * 100;
         }
     }
@@ -116,6 +133,8 @@ class AHeroPawn: APawn
     UFUNCTION()
     void MoveDown() {
         if (CanMove(FVector::BackwardVector)) {
+            StartingLocation = GetActorLocation();
+            Stretch.Stretch();
             TargetLocation = GetActorLocation() + FVector::BackwardVector * 100;
         }
     }
