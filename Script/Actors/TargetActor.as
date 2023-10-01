@@ -9,7 +9,23 @@ class ATargetActor: AActor
     UPROPERTY(DefaultComponent, Attach = Collider)
     UNiagaraComponent Particles;
 
+    UPROPERTY()
+    UMaterialInstance BaseMaterial;
+
+    UPROPERTY()
+    UMaterialInstance TriggeredMaterial;
+
     default SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+    UFUNCTION(BlueprintOverride)
+    void Tick(float DeltaSeconds)
+    {
+        if (HasCrate()) {
+            BaseMesh.SetMaterial(0, TriggeredMaterial);
+        } else {
+            BaseMesh.SetMaterial(0, BaseMaterial);
+        }
+    }
 
     bool HasCrate() {
         FVector Start = GetActorLocation();

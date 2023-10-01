@@ -6,10 +6,17 @@ class ACratePawn: APawn
     UPROPERTY(DefaultComponent, Attach = Collider)
     UStaticMeshComponent BaseMesh;
 
-    FVector TargetLocation;
-    
+    UPROPERTY(Category = "Game")
+    UMaterialInstance BaseMaterial;
+
+    UPROPERTY(Category = "Game")
+    UMaterialInstance TriggeredMaterial;
+
     UPROPERTY(EditAnywhere)
     float MovementSpeed = 500;
+
+    FVector TargetLocation;
+    
 
     default SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
@@ -26,6 +33,11 @@ class ACratePawn: APawn
     void Tick(float DeltaSeconds)
     {
         Move(DeltaSeconds);
+        if (IsOnTarget()) {
+            BaseMesh.SetMaterial(0, TriggeredMaterial);
+        } else {
+            BaseMesh.SetMaterial(0, BaseMaterial);
+        }
     }
 
     bool CanMove(FVector Direction) {
@@ -91,4 +103,21 @@ class ACratePawn: APawn
 	{
         // Log(f"OnEndOverlap {OtherActor.Tags.Num()}");
 	}
+
+    bool IsOnTarget() {
+        FVector Start = GetActorLocation();
+        FVector End = Start + FVector::DownVector * 100;
+        TArray<AActor> Ignore;
+        Ignore.Add(this);
+        FHitResult Hit;
+
+        if(System::LineTraceSingle(Start, End, ETraceTypeQuery::Visibility, false, Ignore, EDrawDebugTrace::ForDuration, Hit, true)) {
+            ATargetActor Target = Cast<ATargetActor>(Hit.Actor);
+            if (Target != nullptr) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
 }

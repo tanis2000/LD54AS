@@ -194,6 +194,15 @@ class AJamGameMode : AGameModeBase
 		GI.CurrentLevel++;
 	}
 
+	void PreviousLevel()
+	{
+		CurrentGameState = EGameState::Transitioning;
+		UJamGameInstance GI = Cast<UJamGameInstance>(GameInstance);
+		if (GI.CurrentLevel > 1) {
+			GI.CurrentLevel--;
+		}
+	}
+
 	void CheckEndGame()
 	{
 		UJamGameInstance GI = Cast<UJamGameInstance>(GameInstance);

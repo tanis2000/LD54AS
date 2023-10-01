@@ -58,6 +58,7 @@ class AJamPlayerController : APlayerController
 		InputComponent.BindAction(n"MoveDown", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"MoveDown"));
 		InputComponent.BindAction(n"Restart", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"Restart"));
 		InputComponent.BindAction(n"Skip", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"Skip"));
+		InputComponent.BindAction(n"Previous", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"Previous"));
 
 		// HUDInstance = WidgetBlueprint::CreateWidget(HUDClass, this);
 		// HUDInstance.AddToViewport();
@@ -128,6 +129,13 @@ class AJamPlayerController : APlayerController
 	{
 		AJamGameMode GameMode = Cast<AJamGameMode>(Gameplay::GetGameMode());
 		GameMode.SkipLevel();
+	}
+
+	UFUNCTION(BlueprintCallable)
+	void Previous(FKey key)
+	{
+		AJamGameMode GameMode = Cast<AJamGameMode>(Gameplay::GetGameMode());
+		GameMode.PreviousLevel();
 	}
 
 	void ShowEndGame()
