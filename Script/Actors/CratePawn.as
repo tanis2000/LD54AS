@@ -12,6 +12,12 @@ class ACratePawn: APawn
     UPROPERTY(Category = "Game")
     UMaterialInstance TriggeredMaterial;
 
+	UPROPERTY(DefaultComponent)
+	UAudioComponent Audio;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	TArray<USoundBase> DoneSound;
+
     UPROPERTY(EditAnywhere)
     float MovementSpeed = 500;
 
@@ -93,6 +99,11 @@ class ACratePawn: APawn
                 if (CanMove(SweepResult.ImpactNormal)) {
                     TargetLocation = GetActorLocation() + SweepResult.ImpactNormal * 100;
                 }
+            }
+
+            ATargetActor Target = Cast<ATargetActor>(OtherActor);
+            if (Target != nullptr) {
+                Sound::PlayRandomSFX(Audio, DoneSound);
             }
         }
 	}

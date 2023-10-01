@@ -15,8 +15,23 @@ class AHeroPawn: APawn
 	UPROPERTY(DefaultComponent)
 	UStretchComponent Stretch;
 
+	UPROPERTY(DefaultComponent)
+	UAudioComponent Audio;
+
     UPROPERTY()
     UCurveVector MovementInterpolationCurve;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	TArray<USoundBase> IdleSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	TArray<USoundBase> MoveSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	TArray<USoundBase> PushSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	TArray<USoundBase> BlockedSound;
 
     FVector TargetLocation;
 
@@ -53,10 +68,7 @@ class AHeroPawn: APawn
     void Tick(float DeltaSeconds)
     {
         Move(DeltaSeconds);
-    }
-
-    void GridMove() {
-
+        PlaySounds();
     }
 
     bool CanMove(FVector Direction) {
@@ -114,44 +126,46 @@ class AHeroPawn: APawn
         // SetActorLocation(NewLocation); 
     }
 
+    void PerformMove(FVector Direction)
+    {
+        if (!bMoving && !bPushing && PathIsBlocked(Direction)){
+            Sound::PlayRandomSFX(Audio, BlockedSound);
+        }
+        if (CanMove(Direction)) {
+            if (WillTryToPushCrate(Direction)) {
+                Sound::PlayRandomSFX(Audio, PushSound);
+            } else {
+                Sound::PlayRandomSFX(Audio, MoveSound);
+            }
+            StartingLocation = GetActorLocation();
+            FaceDirection(Direction);
+            // Stretch.Stretch();
+            TargetLocation = GetActorLocation() + Direction * 100;
+        }
+    }
+
     UFUNCTION()
     void MoveRight() {
-        if (CanMove(FVector::RightVector)) {
-            StartingLocation = GetActorLocation();
-            FaceDirection(FVector::RightVector);
-            // Stretch.Stretch();
-            TargetLocation = GetActorLocation() + FVector::RightVector * 100;
-        }
+        FVector Direction = FVector::RightVector;
+        PerformMove(Direction);
     }
 
     UFUNCTION()
     void MoveLeft() {
-        if (CanMove(FVector::LeftVector)) {
-            StartingLocation = GetActorLocation();
-            FaceDirection(FVector::LeftVector);
-            // Stretch.Stretch();
-            TargetLocation = GetActorLocation() + FVector::LeftVector * 100;
-        }
+        FVector Direction = FVector::LeftVector;
+        PerformMove(Direction);
     }
 
     UFUNCTION()
     void MoveUp() {
-        if (CanMove(FVector::ForwardVector)) {
-            StartingLocation = GetActorLocation();
-            FaceDirection(FVector::ForwardVector);
-            // Stretch.Stretch();
-            TargetLocation = GetActorLocation() + FVector::ForwardVector * 100;
-        }
+        FVector Direction = FVector::ForwardVector;
+        PerformMove(Direction);
     }
 
     UFUNCTION()
     void MoveDown() {
-        if (CanMove(FVector::BackwardVector)) {
-            StartingLocation = GetActorLocation();
-            FaceDirection(FVector::BackwardVector);
-            // Stretch.Stretch();
-            TargetLocation = GetActorLocation() + FVector::BackwardVector * 100;
-        }
+        FVector Direction = FVector::BackwardVector;
+        PerformMove(Direction);
     }
 
     UFUNCTION()
@@ -175,5 +189,54 @@ class AHeroPawn: APawn
         NewForward.Normalize();
         FRotator Rotator = NewForward.Rotation();
         SetActorRotation(Rotator);
+    }
+
+    void PlaySounds()
+    {
+        if (!bMoving && !bPushing && !Audio.IsPlaying() && Math::RandRange(0.0, 1.0) < 0.003) {
+            Sound::PlayRandomSFX(Audio, IdleSound);
+        }
+    }
+
+    bool WillTryToPushCrate(FVector Direction) {
+        FVector Start = GetActorLocation();
+        FVector End = Start + Direction * 80;
+        TArray<AActor> Ignore;
+        Ignore.Add(this);
+        FHitResult Hit;
+
+        if(System::LineTraceSingle(Start, End, ETraceTypeQuery::Visibility, false, Ignore, EDrawDebugTrace::ForDuration, Hit, true)) {
+            ACratePawn Crate = Cast<ACratePawn>(Hit.Actor);
+            if (Crate != nullptr) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    bool PathIsBlocked(FVector Direction) {
+        FVector Start = GetActorLocation();
+        FVector End = Start + Direction * 80;
+        TArray<AActor> Ignore;
+        Ignore.Add(this);
+        FHitResult Hit;
+
+        if(System::LineTraceSingle(Start, End, ETraceTypeQuery::Visibility, false, Ignore, EDrawDebugTrace::ForDuration, Hit, true)) {
+            ACratePawn Crate = Cast<ACratePawn>(Hit.Actor);
+            if (Crate != nullptr) {
+                if (!Crate.CanMove(Direction)) {
+                    return true;
+                }
+            }
+        }
+
+        if(System::LineTraceSingle(Start, End, ETraceTypeQuery::Visibility, false, Ignore, EDrawDebugTrace::ForDuration, Hit, true)) {
+            AWallPawn Wall = Cast<AWallPawn>(Hit.Actor);
+            if (Wall != nullptr) {
+                return true;
+            }
+        }
+        return false;
     }
 }

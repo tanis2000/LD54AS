@@ -8,6 +8,7 @@ class AMenuGameModeBase : AGameModeBase
     {
         UJamSaveSystem SaveSystem = UJamSaveSystem::Get();
         SaveSystem.ReadSaveGame();
+        UpdateAudioVolumes();
     }
 
     UFUNCTION(BlueprintCallable)
@@ -24,4 +25,15 @@ class AMenuGameModeBase : AGameModeBase
         SaveSystem.CurrentSaveGame.CurrentLevel = 1;
         SaveSystem.WriteSaveGame(); 
     }
+
+    void UpdateAudioVolumes()
+	{
+        UJamSaveSystem SaveSystem = UJamSaveSystem::Get();
+        TArray<AAmbientSound> AmbientSounds;
+        GetAllActorsOfClass(AAmbientSound::StaticClass(), AmbientSounds);
+        for (int i = 0 ; i < AmbientSounds.Num() ; i++ ) {
+            AAmbientSound AS = AmbientSounds[i];
+            AS.AudioComponent.SetVolumeMultiplier(SaveSystem.CurrentSaveGame.MusicVolumeMultiplier);
+        }
+	}
 }
