@@ -5,7 +5,7 @@
 
 
 // Sets default values
-AFigurineActor::AFigurineActor()
+AFigurineActor2::AFigurineActor2()
 {
 	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>("BaseMesh");
 	RootComponent = BaseMesh;
@@ -15,14 +15,14 @@ AFigurineActor::AFigurineActor()
 }
 
 // Called when the game starts or when spawned
-void AFigurineActor::BeginPlay()
+void AFigurineActor2::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void AFigurineActor::Tick(float DeltaTime)
+void AFigurineActor2::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }

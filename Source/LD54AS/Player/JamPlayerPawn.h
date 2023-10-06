@@ -10,7 +10,7 @@ class UCameraComponent;
 class USpringArmComponent;
 
 UCLASS()
-class LD54AS_API AJamPlayerPawn : public APawn
+class LD54AS_API AJamPlayerPawn2 : public APawn
 {
 	GENERATED_BODY()
 
@@ -25,7 +25,7 @@ public:
 	UCameraComponent *Camera;
 
 	// Sets default values for this pawn's properties
-	AJamPlayerPawn();
+	AJamPlayerPawn2();
 
 protected:
 	// Called when the game starts or when spawned

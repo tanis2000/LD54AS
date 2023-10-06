@@ -6,14 +6,14 @@
 #include "GameFramework/Pawn.h"
 #include "TestActor.generated.h"
 
-class AJamGameMode;
-class UStretchComponent;
-class UGroundCheckComponent;
+class AJamGameMode2;
+class UStretchComponent2;
+class UGroundCheckComponent2;
 class UArrowComponent;
 class UBoxComponent;
 
 UCLASS()
-class LD54AS_API ATestActor : public APawn
+class LD54AS_API ATestActor2 : public APawn
 {
 	GENERATED_BODY()
 
@@ -31,10 +31,10 @@ public:
 	UArrowComponent *GroundCheckAttachment;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UGroundCheckComponent *GroundCheck;
+	UGroundCheckComponent2 *GroundCheck;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStretchComponent *Stretch;
+	UStretchComponent2 *Stretch;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAudioComponent *Audio;
@@ -43,10 +43,10 @@ public:
 	USoundWave *JumpSound;
 
 	UPROPERTY()
-	AJamGameMode *GameMode;
+	AJamGameMode2 *GameMode;
 	
 	// Sets default values for this pawn's properties
-	ATestActor();
+	ATestActor2();
 
 protected:
 	// Called when the game starts or when spawned

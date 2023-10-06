@@ -7,7 +7,7 @@
 #include "GameGrid.generated.h"
 
 USTRUCT(Blueprintable)
-struct FGrid {
+struct FGrid2 {
 	GENERATED_BODY()
 	
 	UPROPERTY(BlueprintReadWrite)
@@ -24,13 +24,13 @@ struct FGrid {
  * 
  */
 UCLASS(Blueprintable)
-class LD54AS_API UGameGrid : public UBlueprintFunctionLibrary
+class LD54AS_API UGameGrid2 : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 
 public:
 	UFUNCTION(BlueprintCallable)
-	static FGrid ParseLevel(FString Str);
+	static FGrid2 ParseLevel(FString Str);
 
 	UFUNCTION(BlueprintCallable)
 	static int NumLevels();

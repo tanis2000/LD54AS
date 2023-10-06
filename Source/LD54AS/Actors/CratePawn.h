@@ -8,7 +8,7 @@
 #include "CratePawn.generated.h"
 
 UCLASS()
-class LD54AS_API ACratePawn : public APawn
+class LD54AS_API ACratePawn2 : public APawn
 {
 	GENERATED_BODY()
 
@@ -37,7 +37,7 @@ public:
 	FVector TargetLocation;
 	
 	// Sets default values for this pawn's properties
-	ACratePawn();
+	ACratePawn2();
 
 protected:
 	// Called when the game starts or when spawned

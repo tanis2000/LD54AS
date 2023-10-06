@@ -10,42 +10,47 @@
 #include "LD54AS/Systems/JamSaveSystem.h"
 #include "Sound/AmbientSound.h"
 
-AMenuGameModeBase::AMenuGameModeBase(const FObjectInitializer& ObjectIn, ...): Super(ObjectIn)
+AMenuGameModeBase2::AMenuGameModeBase2(const FObjectInitializer& ObjectIn, ...): Super(ObjectIn)
 {
-	PlayerStateClass = AJamPlayerState::StaticClass();
-	PlayerControllerClass = AJamPlayerController::StaticClass();
+	PlayerStateClass = AJamPlayerState2::StaticClass();
+	PlayerControllerClass = AJamPlayerController2::StaticClass();
 }
 
-void AMenuGameModeBase::BeginPlay()
+void AMenuGameModeBase2::BeginPlay()
 {
 	Super::BeginPlay();
-	UJamSaveSystem *SaveSystem = GetWorld()->GetSubsystem<UJamSaveSystem>();
+	UJamSaveSystem2 *SaveSystem = GetWorld()->GetSubsystem<UJamSaveSystem2>();
 	SaveSystem->ReadSaveGame();
 	UpdateAudioVolumes();
 }
 
 
-int AMenuGameModeBase::GetCurrentLevel() 
+int AMenuGameModeBase2::GetCurrentLevel() 
 {
-	UJamSaveSystem *SaveSystem = GetWorld()->GetSubsystem<UJamSaveSystem>();
+	UJamSaveSystem2 *SaveSystem = GetWorld()->GetSubsystem<UJamSaveSystem2>();
 	return SaveSystem->CurrentSaveGame->CurrentLevel; 
 }
 
 
-void AMenuGameModeBase::ResetCurrentLevelAndSave()
+void AMenuGameModeBase2::ResetCurrentLevelAndSave()
 {
-	UJamSaveSystem *SaveSystem = GetWorld()->GetSubsystem<UJamSaveSystem>();
+	UJamSaveSystem2 *SaveSystem = GetWorld()->GetSubsystem<UJamSaveSystem2>();
 	SaveSystem->CurrentSaveGame->CurrentLevel = 1;
 	SaveSystem->WriteSaveGame(); 
 }
 
-void AMenuGameModeBase::UpdateAudioVolumes()
+void AMenuGameModeBase2::UpdateAudioVolumes()
 {
-	UJamSaveSystem *SaveSystem = GetWorld()->GetSubsystem<UJamSaveSystem>();
+	UJamSaveSystem2 *SaveSystem = GetWorld()->GetSubsystem<UJamSaveSystem2>();
 	TArray<AActor *> AmbientSounds;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AAmbientSound::StaticClass(), AmbientSounds);
 	for (int i = 0 ; i < AmbientSounds.Num() ; i++ ) {
 		AAmbientSound *AS = Cast<AAmbientSound>(AmbientSounds[i]);
-		AS->GetAudioComponent()->SetVolumeMultiplier(SaveSystem->CurrentSaveGame->MusicVolumeMultiplier);
+		if (AS) {
+			UAudioComponent* AC = AS->GetAudioComponent();
+			if (AC) {
+				AC->SetVolumeMultiplier(SaveSystem->CurrentSaveGame->MusicVolumeMultiplier);
+			}
+		}
 	}
 }

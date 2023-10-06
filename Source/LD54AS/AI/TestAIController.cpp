@@ -7,29 +7,29 @@
 
 
 // Sets default values
-ATestAIController::ATestAIController()
+ATestAIController2::ATestAIController2()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
 
 // Called when the game starts or when spawned
-void ATestAIController::BeginPlay()
+void ATestAIController2::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Display, TEXT("Hi from the AI"));
-	GetWorld()->GetTimerManager().SetTimer(ThinkTimerHandle, this, &ATestAIController::Think, 3.0f, true);
+	GetWorld()->GetTimerManager().SetTimer(ThinkTimerHandle, this, &ATestAIController2::Think, 3.0f, true);
 }
 
 // Called every frame
-void ATestAIController::Tick(float DeltaTime)
+void ATestAIController2::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-void ATestAIController::Think()
+void ATestAIController2::Think()
 {
 	UE_LOG(LogTemp, Display, TEXT("AI is thinking"));
-	ATestActor *MyPawn = Cast<ATestActor>(GetPawn());
+	ATestActor2 *MyPawn = Cast<ATestActor2>(GetPawn());
 	MyPawn->Jump();
 }

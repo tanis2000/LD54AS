@@ -14,7 +14,7 @@
 
 
 // Sets default values
-ATestActor::ATestActor()
+ATestActor2::ATestActor2()
 {
 	SceneRoot = CreateDefaultSubobject<USceneComponent>("SceneRoot");
 	RootComponent = SceneRoot;
@@ -28,10 +28,10 @@ ATestActor::ATestActor()
 	GroundCheckAttachment = CreateDefaultSubobject<UArrowComponent>("GroundCheckAttachment");
 	GroundCheckAttachment->SetupAttachment(BaseMesh);
 
-	GroundCheck = CreateDefaultSubobject<UGroundCheckComponent>("GroundCheck");
+	GroundCheck = CreateDefaultSubobject<UGroundCheckComponent2>("GroundCheck");
 	GroundCheck->SetupAttachment(BaseMesh);
 
-	Stretch = CreateDefaultSubobject<UStretchComponent>("Stretch");
+	Stretch = CreateDefaultSubobject<UStretchComponent2>("Stretch");
 
 	InputComponent = CreateDefaultSubobject<UInputComponent>("InputComponent");
 
@@ -44,29 +44,29 @@ ATestActor::ATestActor()
 }
 
 // Called when the game starts or when spawned
-void ATestActor::BeginPlay()
+void ATestActor2::BeginPlay()
 {
 	Super::BeginPlay();
-	Collider->OnComponentHit.AddDynamic(this, &ATestActor::OnHit);
-	BaseMesh->OnComponentBeginOverlap.AddDynamic(this, &ATestActor::OnBeginOverlap);
-	BaseMesh->OnComponentEndOverlap.AddDynamic(this, &ATestActor::OnEndOverlap);
+	Collider->OnComponentHit.AddDynamic(this, &ATestActor2::OnHit);
+	BaseMesh->OnComponentBeginOverlap.AddDynamic(this, &ATestActor2::OnBeginOverlap);
+	BaseMesh->OnComponentEndOverlap.AddDynamic(this, &ATestActor2::OnEndOverlap);
 
-	GameMode = Cast<AJamGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	GameMode = Cast<AJamGameMode2>(UGameplayStatics::GetGameMode(GetWorld()));
 }
 
 // Called every frame
-void ATestActor::Tick(float DeltaTime)
+void ATestActor2::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
 // Called to bind functionality to input
-void ATestActor::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ATestActor2::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-void ATestActor::Jump()
+void ATestActor2::Jump()
 {
 	UE_LOG(LogTemp, Display, TEXT("Trying to jump"));
 	Collider->AddImpulse(FVector::UpVector * 500, NAME_None, true);
@@ -77,14 +77,14 @@ void ATestActor::Jump()
 	// Audio.Play();
 }
 
-void ATestActor::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+void ATestActor2::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
                        FVector NormalImpulse, const FHitResult& Hit)
 {
 	//Log(f"Hit {OtherActor.Tags.Num()} {Hit.bBlockingHit}");
 	//Stretch.Squeeze();
 }
 
-void ATestActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void ATestActor2::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                 UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep,
                                 const FHitResult& SweepResult)
 {
@@ -92,7 +92,7 @@ void ATestActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 	Stretch->Squeeze();
 }
 
-void ATestActor::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void ATestActor2::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                               UPrimitiveComponent* OtherComp, int OtherBodyIndex)
 {
 	// Log(f"OnEndOverlap {OtherActor.Tags.Num()}");

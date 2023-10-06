@@ -6,17 +6,17 @@
 #include "Kismet/GameplayStatics.h"
 #include "LD54AS/SaveGame/JamSaveGame.h"
 
-void UJamSaveSystem::Initialize(FSubsystemCollectionBase& Collection)
+void UJamSaveSystem2::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	CurrentSaveGame = Cast<UJamSaveGame>(UGameplayStatics::CreateSaveGameObject(UJamSaveGame::StaticClass()));
+	CurrentSaveGame = Cast<UJamSaveGame2>(UGameplayStatics::CreateSaveGameObject(UJamSaveGame2::StaticClass()));
 }
 
-void UJamSaveSystem::ReadSaveGame()
+void UJamSaveSystem2::ReadSaveGame()
 {
 	if (UGameplayStatics::DoesSaveGameExist("Slot1", 0))
 	{
-		CurrentSaveGame = Cast<UJamSaveGame>(UGameplayStatics::LoadGameFromSlot("Slot1", 0));
+		CurrentSaveGame = Cast<UJamSaveGame2>(UGameplayStatics::LoadGameFromSlot("Slot1", 0));
 		UE_LOG(LogTemp, Display, TEXT("SS: Save game loaded"));
 	}
 	else
@@ -25,7 +25,7 @@ void UJamSaveSystem::ReadSaveGame()
 	}
 }
 
-void UJamSaveSystem::WriteSaveGame()
+void UJamSaveSystem2::WriteSaveGame()
 {
 	UGameplayStatics::SaveGameToSlot(CurrentSaveGame, "Slot1", 0);
 	UE_LOG(LogTemp, Display, TEXT("SS: Save game created"));

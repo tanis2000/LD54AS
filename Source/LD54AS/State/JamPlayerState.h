@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class LD54AS_API AJamPlayerState : public APlayerState
+class LD54AS_API AJamPlayerState2 : public APlayerState
 {
 	GENERATED_BODY()
 public:

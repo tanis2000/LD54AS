@@ -10,7 +10,7 @@
 
 
 // Sets default values
-ACratePawn::ACratePawn()
+ACratePawn2::ACratePawn2()
 {
 	Collider = CreateDefaultSubobject<UBoxComponent>("Collider");
 	RootComponent = Collider;
@@ -27,17 +27,17 @@ ACratePawn::ACratePawn()
 }
 
 // Called when the game starts or when spawned
-void ACratePawn::BeginPlay()
+void ACratePawn2::BeginPlay()
 {
 	Super::BeginPlay();
 	TargetLocation = GetActorLocation();
 
-	BaseMesh->OnComponentBeginOverlap.AddDynamic(this, &ACratePawn::OnBeginOverlap);
-	BaseMesh->OnComponentEndOverlap.AddDynamic(this, &ACratePawn::OnEndOverlap);
+	BaseMesh->OnComponentBeginOverlap.AddDynamic(this, &ACratePawn2::OnBeginOverlap);
+	BaseMesh->OnComponentEndOverlap.AddDynamic(this, &ACratePawn2::OnEndOverlap);
 }
 
 // Called every frame
-void ACratePawn::Tick(float DeltaTime)
+void ACratePawn2::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	Move(DeltaTime);
@@ -52,12 +52,12 @@ void ACratePawn::Tick(float DeltaTime)
 }
 
 // Called to bind functionality to input
-void ACratePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ACratePawn2::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-bool ACratePawn::CanMove(const FVector &Direction)
+bool ACratePawn2::CanMove(const FVector &Direction)
 {
 	FVector CurrentLocation = GetActorLocation();
 	if (CurrentLocation != TargetLocation)
@@ -78,7 +78,7 @@ bool ACratePawn::CanMove(const FVector &Direction)
 	return true;
 }
 
-void ACratePawn::Move(float DeltaSeconds)
+void ACratePawn2::Move(float DeltaSeconds)
 {
 	FVector CurrentLocation = GetActorLocation();
 	if (CurrentLocation == TargetLocation)
@@ -101,7 +101,7 @@ void ACratePawn::Move(float DeltaSeconds)
 	SetActorLocation(NewLocation);
 }
 
-void ACratePawn::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void ACratePawn2::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                 UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep,
                                 const FHitResult& SweepResult)
 {
@@ -109,7 +109,7 @@ void ACratePawn::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 	{
 		UE_LOG(LogTemp, Display, TEXT("Crate OnBeginOverlap %s"), *OtherActor->GetClass()->GetName());
 
-		AHeroPawn* Hero = Cast<AHeroPawn>(OtherActor);
+		AHeroPawn2* Hero = Cast<AHeroPawn2>(OtherActor);
 		if (Hero != nullptr)
 		{
 			UE_LOG(LogTemp, Display, TEXT(">> %s"), SweepResult.ImpactNormal);
@@ -119,7 +119,7 @@ void ACratePawn::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 			}
 		}
 
-		ATargetActor* Target = Cast<ATargetActor>(OtherActor);
+		ATargetActor2* Target = Cast<ATargetActor2>(OtherActor);
 		if (Target != nullptr)
 		{
 			USoundStatics::PlayRandomSFX(GetWorld(), Audio, DoneSound);
@@ -127,13 +127,13 @@ void ACratePawn::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 	}
 }
 
-void ACratePawn::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void ACratePawn2::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                               UPrimitiveComponent* OtherComp, int OtherBodyIndex)
 {
 	// Log(f"OnEndOverlap {OtherActor.Tags.Num()}");
 }
 
-bool ACratePawn::IsOnTarget()
+bool ACratePawn2::IsOnTarget()
 {
 	FVector Start = GetActorLocation();
 	FVector End = Start + FVector::DownVector * 100;
@@ -143,7 +143,7 @@ bool ACratePawn::IsOnTarget()
 
 	if (GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params))
 	{
-		ATargetActor* Target = Cast<ATargetActor>(Hit.GetActor());
+		ATargetActor2* Target = Cast<ATargetActor2>(Hit.GetActor());
 		if (Target != nullptr)
 		{
 			return true;

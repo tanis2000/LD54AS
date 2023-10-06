@@ -7,7 +7,7 @@
 
 
 // Sets default values
-AWallPawn::AWallPawn()
+AWallPawn2::AWallPawn2()
 {
 	Collider = CreateDefaultSubobject<UBoxComponent>("Collider");
 	RootComponent = Collider;
@@ -20,19 +20,19 @@ AWallPawn::AWallPawn()
 }
 
 // Called when the game starts or when spawned
-void AWallPawn::BeginPlay()
+void AWallPawn2::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
 // Called every frame
-void AWallPawn::Tick(float DeltaTime)
+void AWallPawn2::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
 // Called to bind functionality to input
-void AWallPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AWallPawn2::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }

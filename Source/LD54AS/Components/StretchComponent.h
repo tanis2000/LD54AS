@@ -8,10 +8,10 @@
 #include "StretchComponent.generated.h"
 
 
-class UGroundCheckComponent;
+class UGroundCheckComponent2;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class LD54AS_API UStretchComponent : public UActorComponent
+class LD54AS_API UStretchComponent2 : public UActorComponent
 {
 	GENERATED_BODY()
 
@@ -32,10 +32,10 @@ public:
 	FOnTimelineVector ProgressStretchTimeline;
 	FVector InitialScale;
 	UMeshComponent *BaseMesh = nullptr;
-	UGroundCheckComponent *GroundCheck = nullptr;
+	UGroundCheckComponent2 *GroundCheck = nullptr;
 
 	// Sets default values for this component's properties
-	UStretchComponent();
+	UStretchComponent2();
 
 protected:
 	// Called when the game starts

@@ -11,7 +11,7 @@
  * 
  */
 UCLASS()
-class LD54AS_API AJamPlayerController : public APlayerController
+class LD54AS_API AJamPlayerController2 : public APlayerController
 {
 	GENERATED_BODY()
 
@@ -35,7 +35,7 @@ public:
 	UUserWidget *HUDInstance;
 
 	virtual void BeginPlay() override;
-	AHeroPawn* GetHero();
+	AHeroPawn2* GetHero();
 	UFUNCTION(BlueprintCallable)
 	void MoveRight(FKey key);
 	UFUNCTION(BlueprintCallable)

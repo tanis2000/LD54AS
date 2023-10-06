@@ -9,7 +9,7 @@
 #include "TargetActor.generated.h"
 
 UCLASS()
-class LD54AS_API ATargetActor : public AActor
+class LD54AS_API ATargetActor2 : public AActor
 {
 	GENERATED_BODY()
 
@@ -31,7 +31,7 @@ public:
 
 
 	// Sets default values for this actor's properties
-	ATargetActor();
+	ATargetActor2();
 
 protected:
 	// Called when the game starts or when spawned

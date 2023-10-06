@@ -8,7 +8,7 @@
 
 
 // Sets default values for this component's properties
-UGroundCheckComponent::UGroundCheckComponent()
+UGroundCheckComponent2::UGroundCheckComponent2()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -19,7 +19,7 @@ UGroundCheckComponent::UGroundCheckComponent()
 
 
 // Called when the game starts
-void UGroundCheckComponent::BeginPlay()
+void UGroundCheckComponent2::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -28,7 +28,7 @@ void UGroundCheckComponent::BeginPlay()
 
 
 // Called every frame
-void UGroundCheckComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+void UGroundCheckComponent2::TickComponent(float DeltaTime, ELevelTick TickType,
                                           FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -37,7 +37,7 @@ void UGroundCheckComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	bIsOnGround = IsOnGround();
 }
 
-bool UGroundCheckComponent::IsOnGround()
+bool UGroundCheckComponent2::IsOnGround()
 {
 	// Log(f"Owner {Owner.GetName()}");
 	FHitResult Hit;
@@ -58,12 +58,12 @@ bool UGroundCheckComponent::IsOnGround()
 	return false;
 }
 
-bool UGroundCheckComponent::GetIsOnGround()
+bool UGroundCheckComponent2::GetIsOnGround()
 {
 	return bIsOnGround;
 }
 
-bool UGroundCheckComponent::GetWasOnGround()
+bool UGroundCheckComponent2::GetWasOnGround()
 {
 	return bWasOnGround;
 }

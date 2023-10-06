@@ -11,14 +11,14 @@
  * 
  */
 UCLASS()
-class LD54AS_API UJamSaveSystem : public UWorldSubsystem
+class LD54AS_API UJamSaveSystem2 : public UWorldSubsystem
 {
 	GENERATED_BODY()
 
 public:
 
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<UJamSaveGame> CurrentSaveGame;
+	TObjectPtr<UJamSaveGame2> CurrentSaveGame;
 
 private:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;

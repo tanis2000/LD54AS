@@ -3,7 +3,7 @@
 
 #include "GameGrid.h"
 
-FGrid UGameGrid::ParseLevel(FString Str) {
+FGrid2 UGameGrid2::ParseLevel(FString Str) {
 	TArray<FString> Lines;
 	FString Line;
 	FString Leftover = Str;
@@ -15,7 +15,7 @@ FGrid UGameGrid::ParseLevel(FString Str) {
 		Lines.Add(Line);
 	}
 
-	FGrid Level;
+	FGrid2 Level;
 	Level.Width = Lines[0].Len();
 	Level.Height = Lines.Num();
 	for (int i = 0 ; i < Lines.Num() ; i++) {
@@ -27,7 +27,7 @@ FGrid UGameGrid::ParseLevel(FString Str) {
 	return Level;
 }
 
-int UGameGrid::NumLevels()
+int UGameGrid2::NumLevels()
 {
 	return 3;
 }

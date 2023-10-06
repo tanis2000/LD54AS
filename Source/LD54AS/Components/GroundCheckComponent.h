@@ -10,7 +10,7 @@
 class UArrowComponent;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class LD54AS_API UGroundCheckComponent : public USceneComponent
+class LD54AS_API UGroundCheckComponent2 : public USceneComponent
 {
 	GENERATED_BODY()
 
@@ -28,7 +28,7 @@ public:
 	UArrowComponent *GroundChecker = nullptr;
 
 	// Sets default values for this component's properties
-	UGroundCheckComponent();
+	UGroundCheckComponent2();
 
 protected:
 	// Called when the game starts

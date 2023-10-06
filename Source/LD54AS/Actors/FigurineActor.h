@@ -9,7 +9,7 @@
 class URotatingMovementComponent;
 
 UCLASS()
-class LD54AS_API AFigurineActor : public AActor
+class LD54AS_API AFigurineActor2 : public AActor
 {
 	GENERATED_BODY()
 
@@ -22,7 +22,7 @@ public:
 
 
 	// Sets default values for this actor's properties
-	AFigurineActor();
+	AFigurineActor2();
 
 protected:
 	// Called when the game starts or when spawned
