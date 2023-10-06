@@ -8,7 +8,7 @@ public class LD54AS : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "Niagara", "AIModule" });
 
 		// The following is needed for the online leaderboard
 		PrivateDependencyModuleNames.AddRange(new string[]{"HTTP", "Json", "JsonUtilities"});
