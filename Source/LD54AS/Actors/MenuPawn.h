@@ -7,13 +7,13 @@
 #include "MenuPawn.generated.h"
 
 UCLASS()
-class LD54AS_API AMenuPawn2 : public APawn
+class LD54AS_API AMenuPawn : public APawn
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	AMenuPawn2();
+	AMenuPawn();
 
 protected:
 	// Called when the game starts or when spawned

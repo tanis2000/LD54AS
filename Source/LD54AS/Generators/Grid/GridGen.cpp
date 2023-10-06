@@ -11,26 +11,26 @@
 
 
 // Sets default values
-AGridGen2::AGridGen2()
+AGridGen::AGridGen()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
 
 // Called when the game starts or when spawned
-void AGridGen2::BeginPlay()
+void AGridGen::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void AGridGen2::Tick(float DeltaTime)
+void AGridGen::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-    void AGridGen2::Initialize()
+    void AGridGen::Initialize()
     {
         FString s = R"(
 1111111111
@@ -183,19 +183,19 @@ void AGridGen2::Tick(float DeltaTime)
 
     }
 
-    FString AGridGen2::GridFromNumber(int GridNumber) {
+    FString AGridGen::GridFromNumber(int GridNumber) {
         if (AllGrids.Num() > GridNumber-1) {
             return AllGrids[GridNumber-1];
         }
         return "";
     }
 
-    int AGridGen2::NumLevels()
+    int AGridGen::NumLevels()
     {
         return AllGrids.Num();
     }
 
-    void AGridGen2::GenerateLevel(FGrid2 G) {
+    void AGridGen::GenerateLevel(FGrid G) {
         UClass *ActorToSpawn;
         FVector Offset = FVector(-(G.Height * -100 / 2.0), -(G.Width * 100 / 2.0), 0); 
         for (int i = 0 ; i < G.Height ; i++) {

@@ -7,7 +7,7 @@
 
 
 // Sets default values
-ATargetActor2::ATargetActor2()
+ATargetActor::ATargetActor()
 {
 	Collider = CreateDefaultSubobject<UBoxComponent>("Collider");
 	RootComponent = Collider;
@@ -23,14 +23,14 @@ ATargetActor2::ATargetActor2()
 }
 
 // Called when the game starts or when spawned
-void ATargetActor2::BeginPlay()
+void ATargetActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void ATargetActor2::Tick(float DeltaTime)
+void ATargetActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	if (HasCrate()) {
@@ -40,7 +40,7 @@ void ATargetActor2::Tick(float DeltaTime)
 	}
 }
 
-bool ATargetActor2::HasCrate() {
+bool ATargetActor::HasCrate() {
 	FVector Start = GetActorLocation();
 	FVector End = Start + FVector::UpVector;
 	TArray<AActor> Ignore;
@@ -49,7 +49,7 @@ bool ATargetActor2::HasCrate() {
 	FHitResult Hit;
 
 	if(GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params)) {
-		ACratePawn2 *Crate = Cast<ACratePawn2>(Hit.GetActor());
+		ACratePawn *Crate = Cast<ACratePawn>(Hit.GetActor());
 		if (Crate != nullptr) {
 			return true;
 		}

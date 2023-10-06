@@ -10,10 +10,10 @@
 #include "HeroPawn.generated.h"
 
 class UBoxComponent;
-class UStretchComponent2;
+class UStretchComponent;
 
 UCLASS()
-class LD54AS_API AHeroPawn2 : public APawn
+class LD54AS_API AHeroPawn : public APawn
 {
 	GENERATED_BODY()
 
@@ -31,7 +31,7 @@ public:
 	UFloatingPawnMovement *MovementComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStretchComponent2 *Stretch;
+	UStretchComponent *Stretch;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAudioComponent *Audio;
@@ -56,6 +56,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MovementSpeed = 500;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin=0, ClampMax=1))
+	float MovementSfxChance = 0.1f;
+	
 	UPROPERTY()
 	TArray<AActor *> Crates;
 
@@ -68,7 +71,7 @@ public:
 	bool bPushing;
 	
 	// Sets default values for this pawn's properties
-	AHeroPawn2();
+	AHeroPawn();
 
 protected:
 	// Called when the game starts or when spawned

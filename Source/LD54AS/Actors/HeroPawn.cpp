@@ -13,7 +13,7 @@
 
 
 // Sets default values
-AHeroPawn2::AHeroPawn2()
+AHeroPawn::AHeroPawn()
 {
 	Collider = CreateDefaultSubobject<UBoxComponent>("Collider");
 	RootComponent = Collider;
@@ -26,7 +26,7 @@ AHeroPawn2::AHeroPawn2()
 
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>("MovementComponent");
 
-	Stretch = CreateDefaultSubobject<UStretchComponent2>("Stretch");
+	Stretch = CreateDefaultSubobject<UStretchComponent>("Stretch");
 
 	Audio = CreateDefaultSubobject<UAudioComponent>("Audio");
 
@@ -37,21 +37,21 @@ AHeroPawn2::AHeroPawn2()
 }
 
 // Called when the game starts or when spawned
-void AHeroPawn2::BeginPlay()
+void AHeroPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	TargetLocation = GetActorLocation();
 
-	BaseMesh->OnComponentBeginOverlap.AddDynamic(this, &AHeroPawn2::OnBeginOverlap);
-	BaseMesh->OnComponentEndOverlap.AddDynamic(this, &AHeroPawn2::OnEndOverlap);
+	BaseMesh->OnComponentBeginOverlap.AddDynamic(this, &AHeroPawn::OnBeginOverlap);
+	BaseMesh->OnComponentEndOverlap.AddDynamic(this, &AHeroPawn::OnEndOverlap);
 
 	GetMovementComponent()->UpdatedComponent = RootComponent;
 
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACratePawn2::StaticClass(), Crates);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACratePawn::StaticClass(), Crates);
 }
 
 // Called every frame
-void AHeroPawn2::Tick(float DeltaTime)
+void AHeroPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	Move(DeltaTime);
@@ -59,12 +59,12 @@ void AHeroPawn2::Tick(float DeltaTime)
 }
 
 // Called to bind functionality to input
-void AHeroPawn2::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AHeroPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-bool AHeroPawn2::CanMove(FVector Direction)
+bool AHeroPawn::CanMove(FVector Direction)
 {
 	FVector CurrentLocation = GetActorLocation();
 	if (CurrentLocation != TargetLocation)
@@ -80,7 +80,7 @@ bool AHeroPawn2::CanMove(FVector Direction)
 
 	if (GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params))
 	{
-		ACratePawn2* Crate = Cast<ACratePawn2>(Hit.GetActor());
+		ACratePawn* Crate = Cast<ACratePawn>(Hit.GetActor());
 		if (Crate != nullptr)
 		{
 			if (Crate->CanMove(Direction))
@@ -93,7 +93,7 @@ bool AHeroPawn2::CanMove(FVector Direction)
 	return true;
 }
 
-void AHeroPawn2::Move(float DeltaSeconds)
+void AHeroPawn::Move(float DeltaSeconds)
 {
 	FVector CurrentLocation = GetActorLocation();
 	if (CurrentLocation == TargetLocation)
@@ -126,7 +126,7 @@ void AHeroPawn2::Move(float DeltaSeconds)
 	// SetActorLocation(NewLocation); 
 }
 
-void AHeroPawn2::PerformMove(FVector Direction)
+void AHeroPawn::PerformMove(FVector Direction)
 {
 	if (!bMoving && !bPushing && PathIsBlocked(Direction))
 	{
@@ -140,7 +140,10 @@ void AHeroPawn2::PerformMove(FVector Direction)
 		}
 		else
 		{
-			USoundStatics::PlayRandomSFX(GetWorld(), Audio, MoveSound);
+			if (FMath::FRandRange(0.f, 1.f) < MovementSfxChance)
+			{
+				USoundStatics::PlayRandomSFX(GetWorld(), Audio, MoveSound);
+			}
 		}
 		StartingLocation = GetActorLocation();
 		FaceDirection(Direction);
@@ -149,44 +152,44 @@ void AHeroPawn2::PerformMove(FVector Direction)
 	}
 }
 
-void AHeroPawn2::MoveRight()
+void AHeroPawn::MoveRight()
 {
 	FVector Direction = FVector::RightVector;
 	PerformMove(Direction);
 }
 
-void AHeroPawn2::MoveLeft()
+void AHeroPawn::MoveLeft()
 {
 	FVector Direction = FVector::LeftVector;
 	PerformMove(Direction);
 }
 
-void AHeroPawn2::MoveUp()
+void AHeroPawn::MoveUp()
 {
 	FVector Direction = FVector::ForwardVector;
 	PerformMove(Direction);
 }
 
-void AHeroPawn2::MoveDown()
+void AHeroPawn::MoveDown()
 {
 	FVector Direction = FVector::BackwardVector;
 	PerformMove(Direction);
 }
 
-void AHeroPawn2::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void AHeroPawn::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep,
                                const FHitResult& SweepResult)
 {
 	UE_LOG(LogTemp, Display, TEXT("OnBeginOverlap %d"), OtherActor->Tags.Num());
 }
 
-void AHeroPawn2::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void AHeroPawn::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                              UPrimitiveComponent* OtherComp, int OtherBodyIndex)
 {
 	UE_LOG(LogTemp, Display, TEXT("OnEndOverlap %d"), OtherActor->Tags.Num());
 }
 
-void AHeroPawn2::FaceDirection(FVector Direction)
+void AHeroPawn::FaceDirection(FVector Direction)
 {
 	FVector NewForward = Direction;
 	NewForward.Normalize();
@@ -194,7 +197,7 @@ void AHeroPawn2::FaceDirection(FVector Direction)
 	SetActorRotation(Rotator);
 }
 
-void AHeroPawn2::PlaySounds()
+void AHeroPawn::PlaySounds()
 {
 	if (!bMoving && !bPushing && !Audio->IsPlaying() && FMath::RandRange(0.0, 1.0) < 0.003)
 	{
@@ -202,7 +205,7 @@ void AHeroPawn2::PlaySounds()
 	}
 }
 
-bool AHeroPawn2::WillTryToPushCrate(FVector Direction)
+bool AHeroPawn::WillTryToPushCrate(FVector Direction)
 {
 	FVector Start = GetActorLocation();
 	FVector End = Start + Direction * 80;
@@ -212,7 +215,7 @@ bool AHeroPawn2::WillTryToPushCrate(FVector Direction)
 
 	if (GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params))
 	{
-		ACratePawn2* Crate = Cast<ACratePawn2>(Hit.GetActor());
+		ACratePawn* Crate = Cast<ACratePawn>(Hit.GetActor());
 		if (Crate != nullptr)
 		{
 			return true;
@@ -222,7 +225,7 @@ bool AHeroPawn2::WillTryToPushCrate(FVector Direction)
 	return false;
 }
 
-bool AHeroPawn2::PathIsBlocked(FVector Direction)
+bool AHeroPawn::PathIsBlocked(FVector Direction)
 {
 	FVector Start = GetActorLocation();
 	FVector End = Start + Direction * 80;
@@ -232,7 +235,7 @@ bool AHeroPawn2::PathIsBlocked(FVector Direction)
 
 	if (GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params))
 	{
-		ACratePawn2* Crate = Cast<ACratePawn2>(Hit.GetActor());
+		ACratePawn* Crate = Cast<ACratePawn>(Hit.GetActor());
 		if (Crate != nullptr)
 		{
 			if (!Crate->CanMove(Direction))
@@ -244,7 +247,7 @@ bool AHeroPawn2::PathIsBlocked(FVector Direction)
 
 	if (GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params))
 	{
-		AWallPawn2* Wall = Cast<AWallPawn2>(Hit.GetActor());
+		AWallPawn* Wall = Cast<AWallPawn>(Hit.GetActor());
 		if (Wall != nullptr)
 		{
 			return true;

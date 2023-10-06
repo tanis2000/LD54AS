@@ -7,13 +7,13 @@
 #include "TestAIController.generated.h"
 
 UCLASS()
-class LD54AS_API ATestAIController2 : public AAIController
+class LD54AS_API ATestAIController : public AAIController
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	ATestAIController2();
+	ATestAIController();
 
 protected:
 	// Called when the game starts or when spawned

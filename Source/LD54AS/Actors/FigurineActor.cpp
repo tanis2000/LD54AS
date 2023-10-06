@@ -3,26 +3,30 @@
 
 #include "FigurineActor.h"
 
+#include "GameFramework/RotatingMovementComponent.h"
+
 
 // Sets default values
-AFigurineActor2::AFigurineActor2()
+AFigurineActor::AFigurineActor()
 {
-	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>("BaseMesh");
+	BaseMesh = CreateDefaultSubobject<USkeletalMeshComponent>("BaseMesh");
 	RootComponent = BaseMesh;
+
+	RotatingMovement = CreateDefaultSubobject<URotatingMovementComponent>("RotatingMovement");
 
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
 
 // Called when the game starts or when spawned
-void AFigurineActor2::BeginPlay()
+void AFigurineActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void AFigurineActor2::Tick(float DeltaTime)
+void AFigurineActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }

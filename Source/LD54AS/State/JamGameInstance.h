@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class LD54AS_API UJamGameInstance2 : public UGameInstance
+class LD54AS_API UJamGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 

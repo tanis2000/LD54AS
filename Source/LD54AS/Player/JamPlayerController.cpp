@@ -10,7 +10,7 @@
 #include "LD54AS/State/JamGameMode.h"
 
 
-void AJamPlayerController2::TogglePauseMenu(FKey key)
+void AJamPlayerController::TogglePauseMenu(FKey key)
 	{
 		if (PauseMenuInstance != nullptr && PauseMenuInstance->IsInViewport())
 		{
@@ -20,7 +20,7 @@ void AJamPlayerController2::TogglePauseMenu(FKey key)
 			UWidgetBlueprintLibrary::SetInputMode_GameOnly(this);
 			UGameplayStatics::SetGamePaused(GetWorld(), false);
 
-			AJamGameMode2 *GameMode = Cast<AJamGameMode2>(UGameplayStatics::GetGameMode(GetWorld()));
+			AJamGameMode *GameMode = Cast<AJamGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 			GameMode->WriteSaveGame();
 			return;
 		}
@@ -35,18 +35,19 @@ void AJamPlayerController2::TogglePauseMenu(FKey key)
 		}
 	}
 
-	
-	void AJamPlayerController2::BeginPlay()
+	void AJamPlayerController::BeginPlay()
 	{
 		PushInputComponent(InputComponent);
-		InputComponent->BindAction("PauseMenu", EInputEvent::IE_Pressed, this, &AJamPlayerController2::TogglePauseMenu);
-		InputComponent->BindAction("MoveRight", EInputEvent::IE_Pressed, this, &AJamPlayerController2::MoveRight);
-		InputComponent->BindAction("MoveLeft", EInputEvent::IE_Pressed, this, &AJamPlayerController2::MoveLeft);
-		InputComponent->BindAction("MoveUp", EInputEvent::IE_Pressed, this, &AJamPlayerController2::MoveUp);
-		InputComponent->BindAction("MoveDown", EInputEvent::IE_Pressed, this, &AJamPlayerController2::MoveDown);
-		InputComponent->BindAction("Restart", EInputEvent::IE_Pressed, this, &AJamPlayerController2::Restart);
-		InputComponent->BindAction("Skip", EInputEvent::IE_Pressed, this, &AJamPlayerController2::Skip);
-		InputComponent->BindAction("Previous", EInputEvent::IE_Pressed, this, &AJamPlayerController2::Previous);
+		InputComponent->BindAction("PauseMenu", EInputEvent::IE_Pressed, this, &AJamPlayerController::TogglePauseMenu);
+		// InputComponent->BindAction("MoveRight", EInputEvent::IE_Pressed, this, &AJamPlayerController::MoveRight);
+		// InputComponent->BindAction("MoveLeft", EInputEvent::IE_Pressed, this, &AJamPlayerController::MoveLeft);
+		// InputComponent->BindAction("MoveUp", EInputEvent::IE_Pressed, this, &AJamPlayerController::MoveUp);
+		// InputComponent->BindAction("MoveDown", EInputEvent::IE_Pressed, this, &AJamPlayerController::MoveDown);
+		InputComponent->BindAction("Restart", EInputEvent::IE_Pressed, this, &AJamPlayerController::Restart);
+		InputComponent->BindAction("Skip", EInputEvent::IE_Pressed, this, &AJamPlayerController::Skip);
+		InputComponent->BindAction("Previous", EInputEvent::IE_Pressed, this, &AJamPlayerController::Previous);
+	InputComponent->BindAxis("MoveH", this, &AJamPlayerController::MoveHorizontally);
+	InputComponent->BindAxis("MoveV", this, &AJamPlayerController::MoveVertically);
 
 		// HUDInstance = WidgetBlueprint::CreateWidget(HUDClass, this);
 		// HUDInstance.AddToViewport();
@@ -58,70 +59,97 @@ void AJamPlayerController2::TogglePauseMenu(FKey key)
 		// USoundClass Effects = Cast<USoundClass>(FindObject("/Game/Audio/SC_Effects"));
 	}
 
-	AHeroPawn2 *AJamPlayerController2::GetHero()
+	AHeroPawn *AJamPlayerController::GetHero()
 	{
-		AHeroPawn2 *Hero = nullptr;
+		AHeroPawn *Hero = nullptr;
 		TArray<AActor *> Heroes;
-		UGameplayStatics::GetAllActorsOfClass(GetWorld(), AHeroPawn2::StaticClass(), Heroes);
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), AHeroPawn::StaticClass(), Heroes);
 		if (Heroes.Num() > 0) {
-			Hero = Cast<AHeroPawn2>(Heroes[0]);
+			Hero = Cast<AHeroPawn>(Heroes[0]);
 		}
 		return Hero;
 	}
 
-	
-	void AJamPlayerController2::MoveRight(FKey key)
+void AJamPlayerController::MoveHorizontally(float X)
+{
+	AHeroPawn *Hero = GetHero();
+	if (Hero != nullptr) {
+		if (X > 0)
+		{
+			Hero->MoveRight();
+		} else if (X < 0)
+		{
+			Hero->MoveLeft();
+		}
+	}
+}
+
+void AJamPlayerController::MoveVertically(float Y)
+{
+	AHeroPawn *Hero = GetHero();
+	if (Hero != nullptr) {
+		if (Y > 0)
+		{
+			Hero->MoveUp();
+		} else if (Y < 0)
+		{
+			Hero->MoveDown();
+		}
+	}
+}
+
+	void AJamPlayerController::MoveRight(FKey key)
 	{
-		AHeroPawn2 *Hero = GetHero();
+		AHeroPawn *Hero = GetHero();
 		if (Hero != nullptr) {
 			Hero->MoveRight();
 		}
 	}
 
-	void AJamPlayerController2::MoveLeft(FKey key)
+	void AJamPlayerController::MoveLeft(FKey key)
 	{
-		AHeroPawn2 *Hero = GetHero();
+		AHeroPawn *Hero = GetHero();
 		if (Hero != nullptr) {
 			Hero->MoveLeft();
 		}
 	}
 
-	void AJamPlayerController2::MoveUp(FKey key)
+	void AJamPlayerController::MoveUp(FKey key)
 	{
-		AHeroPawn2 *Hero = GetHero();
+		AHeroPawn *Hero = GetHero();
 		if (Hero != nullptr) {
 			Hero->MoveUp();
 		}
 	}
 
 	
-	void AJamPlayerController2::MoveDown(FKey key)
+	void AJamPlayerController::MoveDown(FKey key)
 	{
-		AHeroPawn2 *Hero = GetHero();
+		AHeroPawn *Hero = GetHero();
 		if (Hero != nullptr) {
 			Hero->MoveDown();
 		}
 	}
 
-	void AJamPlayerController2::Restart(FKey key)
+	void AJamPlayerController::Restart(FKey key)
 	{
-		AJamGameMode2 *GameMode = Cast<AJamGameMode2>(UGameplayStatics::GetGameMode(GetWorld()));
+		AJamGameMode *GameMode = Cast<AJamGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 		GameMode->RestartLevel();
 	}
 
-	void AJamPlayerController2::Skip(FKey key)
+	void AJamPlayerController::Skip(FKey key)
 	{
-		AJamGameMode2 *GameMode = Cast<AJamGameMode2>(UGameplayStatics::GetGameMode(GetWorld()));
+		AJamGameMode *GameMode = Cast<AJamGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 		GameMode->SkipLevel();
 	}
 
-	void AJamPlayerController2::Previous(FKey key)
+	void AJamPlayerController::Previous(FKey key)
 	{
-		AJamGameMode2 *GameMode = Cast<AJamGameMode2>(UGameplayStatics::GetGameMode(GetWorld()));
+		AJamGameMode *GameMode = Cast<AJamGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 		GameMode->PreviousLevel();
 	}
 
-	void AJamPlayerController2::ShowEndGame()
+	void AJamPlayerController::ShowEndGame()
 	{
 		// HUDInstance.RemoveFromParent();
 		EndGameInstance = UWidgetBlueprintLibrary::Create(GetWorld(), EndGameClass, this);
@@ -131,7 +159,7 @@ void AJamPlayerController2::TogglePauseMenu(FKey key)
 		UGameplayStatics::SetGamePaused(GetWorld(), true);
 	}
 
-	void AJamPlayerController2::HideEndGame()
+	void AJamPlayerController::HideEndGame()
 	{
 		if (EndGameInstance != nullptr) {
 			EndGameInstance->RemoveFromParent();

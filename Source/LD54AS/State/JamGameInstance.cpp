@@ -3,12 +3,12 @@
 
 #include "JamGameInstance.h"
 
-FText UJamGameInstance2::GetPlayerDisplayName()
+FText UJamGameInstance::GetPlayerDisplayName()
 {
 	return PlayerDisplayName;
 }
 
-void UJamGameInstance2::SetPlayerDisplayName(FText PlayerName)
+void UJamGameInstance::SetPlayerDisplayName(FText PlayerName)
 {
 	PlayerDisplayName = PlayerName;
 }

@@ -10,7 +10,7 @@
  * 
  */
 UCLASS(Blueprintable)
-class LD54AS_API UJamSaveGame2 : public USaveGame
+class LD54AS_API UJamSaveGame : public USaveGame
 {
 	GENERATED_BODY()
 
@@ -24,5 +24,5 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	int CurrentLevel = 1;
 
-	UJamSaveGame2();
+	UJamSaveGame();
 };

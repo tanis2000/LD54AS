@@ -3,12 +3,12 @@
 
 #include "JamPlayerState.h"
 
-FText AJamPlayerState2::GetPlayerDisplayName()
+FText AJamPlayerState::GetPlayerDisplayName()
 {
 	return PlayerDisplayName;
 }
 
-void AJamPlayerState2::SetPlayerDisplayName(FText Name)
+void AJamPlayerState::SetPlayerDisplayName(FText Name)
 {
 	PlayerDisplayName = Name;
 }

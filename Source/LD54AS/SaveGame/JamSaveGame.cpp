@@ -3,6 +3,6 @@
 
 #include "JamSaveGame.h"
 
-UJamSaveGame2::UJamSaveGame2()
+UJamSaveGame::UJamSaveGame()
 {
 }

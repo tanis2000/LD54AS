@@ -10,11 +10,11 @@
  * 
  */
 UCLASS()
-class LD54AS_API AMenuGameModeBase2 : public AGameModeBase
+class LD54AS_API AMenuGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 public:
-	AMenuGameModeBase2(const FObjectInitializer& ObjectIn...);
+	AMenuGameModeBase(const FObjectInitializer& ObjectIn...);
 
 	UFUNCTION(BlueprintCallable)
 	int GetCurrentLevel();

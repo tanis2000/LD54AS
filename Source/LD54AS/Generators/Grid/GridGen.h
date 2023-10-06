@@ -7,34 +7,34 @@
 #include "GameFramework/Actor.h"
 #include "GridGen.generated.h"
 
-class ATargetActor2;
-class ACratePawn2;
-class AHeroPawn2;
-class AWallPawn2;
+class ATargetActor;
+class ACratePawn;
+class AHeroPawn;
+class AWallPawn;
 
 UCLASS()
-class LD54AS_API AGridGen2 : public AActor
+class LD54AS_API AGridGen : public AActor
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
-	TSubclassOf<AWallPawn2> Wall;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<AWallPawn> Wall;
 
-	UPROPERTY()
-	TSubclassOf<AHeroPawn2> Hero;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<AHeroPawn> Hero;
 
-	UPROPERTY()
-	TSubclassOf<ACratePawn2> Crate;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<ACratePawn> Crate;
     
-	UPROPERTY()
-	TSubclassOf<ATargetActor2> Target;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<ATargetActor> Target;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FString> AllGrids;
 
 	// Sets default values for this actor's properties
-	AGridGen2();
+	AGridGen();
 
 protected:
 	// Called when the game starts or when spawned
@@ -54,5 +54,5 @@ public:
 	int NumLevels();
 
 	UFUNCTION(BlueprintCallable)
-	void GenerateLevel(FGrid2 G);
+	void GenerateLevel(FGrid G);
 };

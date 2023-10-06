@@ -9,20 +9,20 @@
 class URotatingMovementComponent;
 
 UCLASS()
-class LD54AS_API AFigurineActor2 : public AActor
+class LD54AS_API AFigurineActor : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent *BaseMesh;
+	USkeletalMeshComponent *BaseMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	URotatingMovementComponent *RotatingMovement;
 
 
 	// Sets default values for this actor's properties
-	AFigurineActor2();
+	AFigurineActor();
 
 protected:
 	// Called when the game starts or when spawned

@@ -9,7 +9,7 @@
 class UBoxComponent;
 
 UCLASS()
-class LD54AS_API AWallPawn2 : public APawn
+class LD54AS_API AWallPawn : public APawn
 {
 	GENERATED_BODY()
 
@@ -21,7 +21,7 @@ public:
 	UStaticMeshComponent *BaseMesh;
 
 	// Sets default values for this pawn's properties
-	AWallPawn2();
+	AWallPawn();
 
 protected:
 	// Called when the game starts or when spawned

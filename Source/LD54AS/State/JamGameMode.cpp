@@ -17,48 +17,54 @@
 #include "LD54AS/SaveGame/JamSaveGame.h"
 #include "Sound/AmbientSound.h"
 
-AJamGameMode2::AJamGameMode2(const FObjectInitializer& ObjectIn, ...): Super(ObjectIn)
+AJamGameMode::AJamGameMode(const FObjectInitializer& ObjectIn, ...): Super(ObjectIn)
 {
-	CurrentSaveGame = Cast<UJamSaveGame2>(UGameplayStatics::CreateSaveGameObject(UJamSaveGame2::StaticClass()));
-	PlayerStateClass = AJamPlayerState2::StaticClass();
-	PlayerControllerClass = AJamPlayerController2::StaticClass();
+	CurrentSaveGame = Cast<UJamSaveGame>(UGameplayStatics::CreateSaveGameObject(UJamSaveGame::StaticClass()));
+	PlayerStateClass = AJamPlayerState::StaticClass();
+	PlayerControllerClass = AJamPlayerController::StaticClass();
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.TickGroup = TG_PrePhysics;
 }
 
-void AJamGameMode2::BeginPlay()
+void AJamGameMode::BeginPlay()
 {
-	CurrentGameState = EGameState2::Initializing;
-	UJamGameInstance2* GI = Cast<UJamGameInstance2>(GetGameInstance());
+	CurrentGameState = EGameState::Initializing;
+	UJamGameInstance* GI = Cast<UJamGameInstance>(GetGameInstance());
 	ReadSaveGame();
 	UpdateAudioVolumes();
-	GetGridGen()->Initialize();
-	GenerateLevel(GI->CurrentLevel);
-	CollectTargets();
+	AGridGen *GridGen = GetGridGen();
+	if (GridGen)
+	{
+		GridGen->Initialize();
+		GenerateLevel(GI->CurrentLevel);
+		CollectTargets();
+	}
 }
 
-void AJamGameMode2::Tick(float DeltaSeconds)
+void AJamGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
 	switch (CurrentGameState)
 	{
-	case EGameState2::Playing:
+	case EGameState::Playing:
 		CheckWinCondition();
 		break;
-	case EGameState2::Transitioning:
+	case EGameState::Transitioning:
 		CheckEndGame();
 		NextLevel();
 		break;
-	case EGameState2::End:
+	case EGameState::End:
 		ShowEndGame();
 		break;
 	default: ;
 	}
 }
 
-void AJamGameMode2::WriteSaveGame()
+void AJamGameMode::WriteSaveGame()
 {
-	UJamGameInstance2* GI = Cast<UJamGameInstance2>(GetGameInstance());
-	CurrentSaveGame = Cast<UJamSaveGame2>(UGameplayStatics::CreateSaveGameObject(UJamSaveGame2::StaticClass()));
+	UJamGameInstance* GI = Cast<UJamGameInstance>(GetGameInstance());
+	CurrentSaveGame = Cast<UJamSaveGame>(UGameplayStatics::CreateSaveGameObject(UJamSaveGame::StaticClass()));
 	CurrentSaveGame->MusicVolumeMultiplier = MusicVolumeMultiplier;
 	CurrentSaveGame->SoundEffectsVolumeMultiplier = SoundEffectsVolumeMultiplier;
 	CurrentSaveGame->CurrentLevel = GI->CurrentLevel;
@@ -66,12 +72,12 @@ void AJamGameMode2::WriteSaveGame()
 	UE_LOG(LogTemp, Display, TEXT("Save game created"));
 }
 
-void AJamGameMode2::ReadSaveGame()
+void AJamGameMode::ReadSaveGame()
 {
 	if (UGameplayStatics::DoesSaveGameExist("Slot1", 0))
 	{
-		UJamGameInstance2* GI = Cast<UJamGameInstance2>(GetGameInstance());
-		CurrentSaveGame = Cast<UJamSaveGame2>(UGameplayStatics::LoadGameFromSlot("Slot1", 0));
+		UJamGameInstance* GI = Cast<UJamGameInstance>(GetGameInstance());
+		CurrentSaveGame = Cast<UJamSaveGame>(UGameplayStatics::LoadGameFromSlot("Slot1", 0));
 		MusicVolumeMultiplier = CurrentSaveGame->MusicVolumeMultiplier;
 		SoundEffectsVolumeMultiplier = CurrentSaveGame->SoundEffectsVolumeMultiplier;
 		GI->CurrentLevel = CurrentSaveGame->CurrentLevel;
@@ -83,7 +89,7 @@ void AJamGameMode2::ReadSaveGame()
 	}
 }
 
-void AJamGameMode2::UpdateAudioVolumes()
+void AJamGameMode::UpdateAudioVolumes()
 {
 	TArray<AActor*> AmbientSounds;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AAmbientSound::StaticClass(), AmbientSounds);
@@ -94,28 +100,28 @@ void AJamGameMode2::UpdateAudioVolumes()
 	}
 }
 
-void AJamGameMode2::CollectTargets()
+void AJamGameMode::CollectTargets()
 {
 	Targets.Reset();
 	Heroes.Reset();
 	Walls.Reset();
 	Crates.Reset();
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATargetActor2::StaticClass(), Targets);
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AHeroPawn2::StaticClass(), Heroes);
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AWallPawn2::StaticClass(), Walls);
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACratePawn2::StaticClass(), Crates);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATargetActor::StaticClass(), Targets);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AHeroPawn::StaticClass(), Heroes);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AWallPawn::StaticClass(), Walls);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACratePawn::StaticClass(), Crates);
 }
 
-void AJamGameMode2::CheckWinCondition()
+void AJamGameMode::CheckWinCondition()
 {
-	if (CurrentGameState != EGameState2::Playing)
+	if (CurrentGameState != EGameState::Playing)
 	{
 		return;
 	}
 
 	for (int i = 0; i < Targets.Num(); i++)
 	{
-		ATargetActor2* Target = Cast<ATargetActor2>(Targets[i]);
+		ATargetActor* Target = Cast<ATargetActor>(Targets[i]);
 		if (!Target->HasCrate())
 		{
 			return;
@@ -123,51 +129,64 @@ void AJamGameMode2::CheckWinCondition()
 	}
 	UE_LOG(LogTemp, Display, TEXT("Win"));
 
-	CurrentGameState = EGameState2::Transitioning;
-	UJamGameInstance2* GI = Cast<UJamGameInstance2>(GetWorld()->GetGameInstance());
+	CurrentGameState = EGameState::Transitioning;
+	UJamGameInstance* GI = Cast<UJamGameInstance>(GetWorld()->GetGameInstance());
 	SubmitScore(GI->CurrentLevel);
 	GI->CurrentLevel++;
 	WriteSaveGame();
 }
 
-void AJamGameMode2::NextLevel()
+void AJamGameMode::NextLevel()
 {
-	UJamGameInstance2* GI = Cast<UJamGameInstance2>(GetWorld()->GetGameInstance());
+	UJamGameInstance* GI = Cast<UJamGameInstance>(GetWorld()->GetGameInstance());
 	CleanUp();
 	GenerateLevel(GI->CurrentLevel);
 	CollectTargets();
 }
 
-AGridGen2* AJamGameMode2::GetGridGen()
+AGridGen* AJamGameMode::GetGridGen()
 {
+	AGridGen* GridGen = nullptr;
 	TArray<AActor*> GridGens;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AGridGen2::StaticClass(), GridGens);
-	AGridGen2* GridGen = Cast<AGridGen2>(GridGens[0]);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AGridGen::StaticClass(), GridGens);
+	if (GridGens.Num() == 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("you have to add a GridGen to the level"));
+		return GridGen;
+	}
+	GridGen = Cast<AGridGen>(GridGens[0]);
 	return GridGen;
 }
 
-void AJamGameMode2::GenerateLevel(int LevelNumber)
+void AJamGameMode::GenerateLevel(int LevelNumber)
 {
-	AGridGen2* GridGen = GetGridGen();
-	if (LevelNumber > GridGen->NumLevels())
+	AGridGen* GridGen = GetGridGen();
+	if (GridGen == nullptr)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Cannot generate the level. GridGen is missing in this level. You have to add one."));
 		return;
 	}
-	FGrid2 G = UGameGrid2::ParseLevel(GridGen->GridFromNumber(LevelNumber));
+	
+	if (LevelNumber > GridGen->NumLevels())
+	{
+		UE_LOG(LogTemp, Display, TEXT("Last level reached."));
+		return;
+	}
+	FGrid G = UGameGrid::ParseLevel(GridGen->GridFromNumber(LevelNumber));
 	GridGen->GenerateLevel(G);
-	CurrentGameState = EGameState2::Playing;
+	CurrentGameState = EGameState::Playing;
 }
 
-void AJamGameMode2::SubmitScore(int Score)
+void AJamGameMode::SubmitScore(int Score)
 {
-	UJamGameInstance2* GI = Cast<UJamGameInstance2>(GetWorld()->GetGameInstance());
+	UJamGameInstance* GI = Cast<UJamGameInstance>(GetWorld()->GetGameInstance());
 	TArray<AActor*> Leaderboards;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALeaderboardActor::StaticClass(), Leaderboards);
 	ALeaderboardActor* Leaderboard = Cast<ALeaderboardActor>(Leaderboards[0]);
 	Leaderboard->SubmitScore(GI->PlayerDisplayName.ToString(), Score);
 }
 
-void AJamGameMode2::CleanUp()
+void AJamGameMode::CleanUp()
 {
 	for (int i = 0; i < Targets.Num(); i++)
 	{
@@ -191,41 +210,41 @@ void AJamGameMode2::CleanUp()
 	}
 }
 
-void AJamGameMode2::RestartLevel()
+void AJamGameMode::RestartLevel()
 {
-	CurrentGameState = EGameState2::Transitioning;
+	CurrentGameState = EGameState::Transitioning;
 	NextLevel();
 }
 
-void AJamGameMode2::SkipLevel()
+void AJamGameMode::SkipLevel()
 {
-	CurrentGameState = EGameState2::Transitioning;
-	UJamGameInstance2* GI = Cast<UJamGameInstance2>(GetWorld()->GetGameInstance());
+	CurrentGameState = EGameState::Transitioning;
+	UJamGameInstance* GI = Cast<UJamGameInstance>(GetWorld()->GetGameInstance());
 	GI->CurrentLevel++;
 }
 
-void AJamGameMode2::PreviousLevel()
+void AJamGameMode::PreviousLevel()
 {
-	CurrentGameState = EGameState2::Transitioning;
-	UJamGameInstance2* GI = Cast<UJamGameInstance2>(GetWorld()->GetGameInstance());
+	CurrentGameState = EGameState::Transitioning;
+	UJamGameInstance* GI = Cast<UJamGameInstance>(GetWorld()->GetGameInstance());
 	if (GI->CurrentLevel > 1)
 	{
 		GI->CurrentLevel--;
 	}
 }
 
-void AJamGameMode2::CheckEndGame()
+void AJamGameMode::CheckEndGame()
 {
-	UJamGameInstance2* GI = Cast<UJamGameInstance2>(GetWorld()->GetGameInstance());
-	AGridGen2* GridGen = GetGridGen();
+	UJamGameInstance* GI = Cast<UJamGameInstance>(GetWorld()->GetGameInstance());
+	AGridGen* GridGen = GetGridGen();
 	if (GI->CurrentLevel > GridGen->NumLevels())
 	{
-		CurrentGameState = EGameState2::End;
+		CurrentGameState = EGameState::End;
 	}
 }
 
-void AJamGameMode2::ShowEndGame()
+void AJamGameMode::ShowEndGame()
 {
-	AJamPlayerController2* PC = Cast<AJamPlayerController2>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	AJamPlayerController* PC = Cast<AJamPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	PC->ShowEndGame();
 }

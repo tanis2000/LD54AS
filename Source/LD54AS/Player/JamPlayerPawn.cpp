@@ -8,7 +8,7 @@
 
 
 // Sets default values
-AJamPlayerPawn2::AJamPlayerPawn2()
+AJamPlayerPawn::AJamPlayerPawn()
 {
 	SceneRoot = CreateDefaultSubobject<USceneComponent>("SceneRoot");
 	RootComponent = SceneRoot;
@@ -24,20 +24,20 @@ AJamPlayerPawn2::AJamPlayerPawn2()
 }
 
 // Called when the game starts or when spawned
-void AJamPlayerPawn2::BeginPlay()
+void AJamPlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void AJamPlayerPawn2::Tick(float DeltaTime)
+void AJamPlayerPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
 // Called to bind functionality to input
-void AJamPlayerPawn2::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AJamPlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }

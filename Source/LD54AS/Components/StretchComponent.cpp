@@ -7,7 +7,7 @@
 
 
 // Sets default values for this component's properties
-UStretchComponent2::UStretchComponent2()
+UStretchComponent::UStretchComponent()
 {
 	SqueezeTimeline = CreateDefaultSubobject<UTimelineComponent>("SqueezeTimeline");
 	StretchTimeline = CreateDefaultSubobject<UTimelineComponent>("StretchTimeline");
@@ -20,14 +20,14 @@ UStretchComponent2::UStretchComponent2()
 
 
 // Called when the game starts
-void UStretchComponent2::BeginPlay()
+void UStretchComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
 	BaseMesh = Cast<UMeshComponent>(GetOwner()->GetComponentByClass(UMeshComponent::StaticClass()));
 	InitialScale = BaseMesh->GetRelativeScale3D();
 
-	GroundCheck = Cast<UGroundCheckComponent2>(GetOwner()->GetComponentByClass(UGroundCheckComponent2::StaticClass()));
+	GroundCheck = Cast<UGroundCheckComponent>(GetOwner()->GetComponentByClass(UGroundCheckComponent::StaticClass()));
 
 	ProgressSqueezeTimeline.BindUFunction(this, FName("ProgressSqueeze"));
 	ProgressStretchTimeline.BindUFunction(this, FName("ProgressStretch"));
@@ -55,7 +55,7 @@ void UStretchComponent2::BeginPlay()
 
 
 // Called every frame
-void UStretchComponent2::TickComponent(float DeltaTime, ELevelTick TickType,
+void UStretchComponent::TickComponent(float DeltaTime, ELevelTick TickType,
                                        FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -72,7 +72,7 @@ void UStretchComponent2::TickComponent(float DeltaTime, ELevelTick TickType,
 	// }
 }
 
-void UStretchComponent2::Stretch()
+void UStretchComponent::Stretch()
 {
 	UE_LOG(LogTemp, Display, TEXT("Stretch"));
 	if (StretchTimeline->IsPlaying())
@@ -84,7 +84,7 @@ void UStretchComponent2::Stretch()
 	StretchTimeline->PlayFromStart();
 }
 
-void UStretchComponent2::Squeeze()
+void UStretchComponent::Squeeze()
 {
 	UE_LOG(LogTemp, Display, TEXT("Squeeze"));
 	if (SqueezeTimeline->IsPlaying())
@@ -96,7 +96,7 @@ void UStretchComponent2::Squeeze()
 	SqueezeTimeline->PlayFromStart();
 }
 
-void UStretchComponent2::ProgressSqueeze(FVector Value)
+void UStretchComponent::ProgressSqueeze(FVector Value)
 {
 	// Log(f"Squeeze progress {Value}");
 	FVector Scale = InitialScale;
@@ -104,7 +104,7 @@ void UStretchComponent2::ProgressSqueeze(FVector Value)
 	BaseMesh->SetRelativeScale3D(Scale);
 }
 
-void UStretchComponent2::ProgressStretch(FVector Value)
+void UStretchComponent::ProgressStretch(FVector Value)
 {
 	// Log(f"Stretch progress {Value}");
 	FVector Scale = InitialScale;

@@ -7,10 +7,10 @@
 #include "LD54AS/Generators/Grid/GridGen.h"
 #include "JamGameMode.generated.h"
 
-class UJamSaveGame2;
+class UJamSaveGame;
 
 UENUM()
-enum class EGameState2 {
+enum class EGameState {
 	Initializing,
 	Transitioning,
 	Playing,
@@ -21,7 +21,7 @@ enum class EGameState2 {
  * 
  */
 UCLASS()
-class LD54AS_API AJamGameMode2 : public AGameModeBase
+class LD54AS_API AJamGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
@@ -33,10 +33,10 @@ public:
 	float SoundEffectsVolumeMultiplier = 1;
 
 	UPROPERTY()
-	UJamSaveGame2 *CurrentSaveGame;
+	UJamSaveGame *CurrentSaveGame;
 
 	UPROPERTY()
-	EGameState2 CurrentGameState;
+	EGameState CurrentGameState;
 
 	UPROPERTY()
 	TArray<AActor *> Targets;
@@ -47,7 +47,7 @@ public:
 	UPROPERTY()
 	TArray<AActor *> Crates;
 	
-	AJamGameMode2(const FObjectInitializer& ObjectIn...);
+	AJamGameMode(const FObjectInitializer& ObjectIn...);
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 
@@ -60,7 +60,7 @@ public:
 	void CollectTargets();
 	void CheckWinCondition();
 	void NextLevel();
-	AGridGen2* GetGridGen();
+	AGridGen* GetGridGen();
 	void GenerateLevel(int LevelNumber);
 	void SubmitScore(int Score);
 	void CleanUp();

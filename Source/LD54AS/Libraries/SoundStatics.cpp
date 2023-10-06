@@ -9,7 +9,7 @@
 
 void USoundStatics::PlaySFX(UWorld* World, UAudioComponent *Audio, USoundBase *Sound)
 {
-	AJamGameMode2 *GameMode = Cast<AJamGameMode2>(UGameplayStatics::GetGameMode(World));
+	AJamGameMode *GameMode = Cast<AJamGameMode>(UGameplayStatics::GetGameMode(World));
 	Audio->SetSound(Sound);
 	Audio->SetVolumeMultiplier(GameMode->SoundEffectsVolumeMultiplier);
 	Audio->Play();
