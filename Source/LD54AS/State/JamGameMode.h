@@ -50,7 +50,11 @@ public:
 	AJamGameMode(const FObjectInitializer& ObjectIn...);
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
+
+	UFUNCTION(BlueprintCallable)
 	void WriteSaveGame();
+
+	UFUNCTION(BlueprintCallable)
 	void ReadSaveGame();
 	void UpdateAudioVolumes();
 	void CollectTargets();
@@ -60,8 +64,14 @@ public:
 	void GenerateLevel(int LevelNumber);
 	void SubmitScore(int Score);
 	void CleanUp();
+
+	UFUNCTION(BlueprintCallable)
 	void RestartLevel();
+
+	UFUNCTION(BlueprintCallable)
 	void SkipLevel();
+
+	UFUNCTION(BlueprintCallable)
 	void PreviousLevel();
 	void CheckEndGame();
 	void ShowEndGame();

@@ -10,15 +10,20 @@ USTRUCT(Blueprintable)
 struct FGrid {
 	GENERATED_BODY()
 	
+	UPROPERTY(BlueprintReadWrite)
 	int Width;
+
+	UPROPERTY(BlueprintReadWrite)
 	int Height;
+
+	UPROPERTY(BlueprintReadWrite)
 	TArray<int> Grid;
 };
 
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class LD54AS_API UGameGrid : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()

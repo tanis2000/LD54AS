@@ -45,12 +45,15 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
+	UFUNCTION(BlueprintCallable)
 	void Stretch();
+
+	UFUNCTION(BlueprintCallable)
 	void Squeeze();
 	
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void ProgressSqueeze(FVector Value);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void ProgressStretch(FVector Value);
 };

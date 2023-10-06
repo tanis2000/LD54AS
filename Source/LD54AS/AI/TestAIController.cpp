@@ -30,6 +30,6 @@ void ATestAIController::Tick(float DeltaTime)
 void ATestAIController::Think()
 {
 	UE_LOG(LogTemp, Display, TEXT("AI is thinking"));
-	ATestActor *Pawn = Cast<ATestActor>(GetPawn());
-	Pawn->Jump();
+	ATestActor *MyPawn = Cast<ATestActor>(GetPawn());
+	MyPawn->Jump();
 }

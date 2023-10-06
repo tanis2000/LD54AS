@@ -43,8 +43,16 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintCallable)
 	void Initialize();
+
+	UFUNCTION(BlueprintCallable)
 	FString GridFromNumber(int GridNumber);
+
+	UFUNCTION(BlueprintCallable)
 	int NumLevels();
+
+	UFUNCTION(BlueprintCallable)
 	void GenerateLevel(FGrid G);
 };

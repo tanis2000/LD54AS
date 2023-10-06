@@ -57,7 +57,7 @@ void ACratePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-bool ACratePawn::CanMove(FVector Direction)
+bool ACratePawn::CanMove(const FVector &Direction)
 {
 	FVector CurrentLocation = GetActorLocation();
 	if (CurrentLocation != TargetLocation)

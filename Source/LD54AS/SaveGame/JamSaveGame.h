@@ -9,16 +9,16 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class LD54AS_API UJamSaveGame : public USaveGame
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float MusicVolumeMultiplier = 1;
     
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float SoundEffectsVolumeMultiplier = 1;
 
 	UPROPERTY(BlueprintReadWrite)

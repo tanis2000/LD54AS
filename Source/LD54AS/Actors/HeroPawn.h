@@ -80,20 +80,26 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION(BlueprintCallable)
 	bool CanMove(FVector Direction);
+
+	UFUNCTION(BlueprintCallable)
 	void Move(float DeltaSeconds);
+
+	UFUNCTION(BlueprintCallable)
 	void PerformMove(FVector Direction);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void MoveRight();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void MoveLeft();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void MoveUp();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void MoveDown();
 
 	UFUNCTION()
@@ -103,8 +109,16 @@ public:
 	UFUNCTION()
 	void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	                  int OtherBodyIndex);
+
+	UFUNCTION(BlueprintCallable)
 	void FaceDirection(FVector Direction);
+
+	UFUNCTION(BlueprintCallable)
 	void PlaySounds();
+
+	UFUNCTION(BlueprintCallable)
 	bool WillTryToPushCrate(FVector Direction);
+
+	UFUNCTION(BlueprintCallable)
 	bool PathIsBlocked(FVector Direction);
 };

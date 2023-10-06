@@ -16,7 +16,8 @@ class LD54AS_API UJamSaveSystem : public UWorldSubsystem
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
+
+	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UJamSaveGame> CurrentSaveGame;
 
 private:
