@@ -35,7 +35,7 @@ void UStretchComponent::BeginPlay()
 
 	if (SqueezeCurve == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("You must set a curve for squeezing"));
+		UE_LOG(LogTemp, Error, TEXT("%s: You must set a curve for squeezing"), *GetOwner()->GetName());
 	}
 	else
 	{
@@ -44,7 +44,7 @@ void UStretchComponent::BeginPlay()
 
 	if (SqueezeCurve == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("You must set a curve for stretching"));
+		UE_LOG(LogTemp, Error, TEXT("%s: You must set a curve for stretching"), *GetOwner()->GetName());
 	}
 	else
 	{
